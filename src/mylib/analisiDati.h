@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 //Il mio namespace
 namespace mions {
@@ -23,7 +24,7 @@ public:
 	vector<T> vectDati;
 	//Costruttore
 	AnalisiSingVarOffline_Lazy(const vector<T>& aDati, bool eliminaTreSigma = true) {
-		vectDati = aDati;//La classe ha una sua copia dei dati. it's a good idea?
+		vectDati = aDati;//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo
 		int numDati = vectDati.size();
 
 		dMedia=(double)vectDati[0];
@@ -173,6 +174,7 @@ private:
 	double dErroreMedia = 0;
 	//double dModa=0;
 
+	//TODO Idea: un altro array di int con l'ordine dei dati
 	inline void ordinaDati() {
 		if ((flagStato & bitDatiOrdinati) != bitDatiOrdinati) {
 			std::sort(vectDati.begin(),vectDati.end());
