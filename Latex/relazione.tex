@@ -1,0 +1,89 @@
+\documentclass[12pt]{article} % Prepara un documento con un font grande
+\usepackage[italian]{babel} % Adatta LaTeX alle convenzioni tipografiche italiane,
+							% e ridefinisce alcuni titoli in italiano, come "Capitolo" al posto di "Chapter",
+							% se il documento è in italiano
+
+\usepackage[utf8]{inputenc} % Consente l'uso caratteri accentati italiani
+\usepackage{graphicx}		% Per le immagini
+
+
+\title{Titolo del documento}
+\author{Francesco Forcher\\ % la doppia barra inversa forza a capo
+Facoltà di Fisica\\
+Università di Padova\\
+Matricola: \texttt{1073458}\\
+\texttt{mailto:francesco.forcher@studenti.unipd.it}
+\and
+Pinco pallino\\ % Secondo autore indicato con \and
+Facoltà di Fisica\\
+Università di Padova\\
+Matricola: \texttt{1234567890}\\
+\texttt{mailto:pinco.pallino@ciao.it}\\
+}
+\date{\today}
+
+\pagestyle{headings}
+\DeclareGraphicsExtensions{.svg, .pdf, .png, .jpg} % Se due immagini hanno lo stesso nome sceglile secondo l'ordine di filetype qui
+
+\graphicspath{ {./img/} }%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EDITARE PATH!!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% % Path delle immagini 
+
+
+%////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+% Fine dei dati iniziali per il latex: il documento finale inizierà da qui
+\begin{document}
+
+
+\maketitle % Produce il titolo a partire dai comandi \title, \author e \date
+\tableofcontents % Prepara l'indice generale
+
+
+\begin{abstract} % Questo è l'inizio dell'ambiente "abstract" ("Sommario")
+	% L'ambiente abstract è fatto per contenere un riassunto del contenuto.
+	Breve dimostrazione dell'uso di \LaTeX.
+\end{abstract}
+
+
+\section{Titolo prima parte (1.)}
+	Testo introduttivo prima parte.
+	È possibile scrivere il testo dell'articolo normalmente, ed \emph{enfatizzare} alcune parti del discorso. %
+	Una riga vuota nel testo indica la fine di un paragrafo.
+ 
+	Paragrafo 2
+
+
+\subsection{Paragrafo della prima parte (1.1)}
+	Testo generico
+
+	Paragrafo 1
+	\linebreak[4] % Inserisci uno spazio bianco tra i paragrafi, il numero da 0 a 4 è la priorità (quanto è importante che ci sia questo spazio)
+	Paragrafo 2
+
+
+
+\paragraph{Esempio inserimento codice}
+	Esempio di codice inserito nel testo
+	%Verbatim non interpreta l'imput lasciando il testo com'è: ideale per inserire codice
+\begin{verbatim}
+#include <iostream>
+
+int main() {
+	using namespace std; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	cout << "Hello world"; \\Stampa hello world
+	return 0;
+}
+\end{verbatim}
+
+	Testo paragrafo: formule %Esempio formula
+	esempio: \((x+2)^n\)
+
+% Esempio di inclusione di un immagine ./img/spazio1.png etichettata fig:spazio, al centro, larga 0.8 per larghezza del testo, con testo sotto Spazio!
+%\subsection{Esempio immagini}
+%\begin{figure}[p]
+%    \centering
+%    \includegraphics[width=0.8\textwidth]{spazio1}
+%    \caption{Spazio!}
+%    \label{fig:spazio1}
+%\end{figure}
+
+\end{document}
