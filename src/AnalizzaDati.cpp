@@ -1,7 +1,7 @@
 //============================================================================
 // Name        : Misure.cpp
 // Author      : Francesco Forcher
-// Version     : 3.0
+// Version     : 0.1
 // Description : Programma per analizzare i dati sul pendolo raccolti in laboratorio
 //============================================================================
 
@@ -21,7 +21,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //le mie classi
 #include "mylib/analisiDati.h"//Le mie classi Template per l'analisi dati
-#define VERSIONE 3.0
+#define VERSIONE 0.1
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Prototipi
@@ -35,11 +35,12 @@ inline void leggiFile(char const * const NomeFile) throw(std::string);
 //////////////////////////////////////////////////////////////////////////////////////
 
 int main(int numParam, char* args[]) {
+
 	using namespace std;
 
 	system("clear");
 	cout << "\n";
-	cout << "Programma per analizzare i dati del pendolo, versione: " << VERSIONE << endl;
+	cout << "Programma per analizzare i dati della guidovia, versione: " << VERSIONE << endl;
 	/* Esempio di file di dati:
 	 * #FORMATO_D
 	 * #NUMDATI_3
@@ -48,18 +49,10 @@ int main(int numParam, char* args[]) {
 	 * 2.67
 	 */
 	try {
-		//Se il numero di parametri è maggiore o uguale a 1, cioè c'è almeno un argomento, fai un ciclo e analizza tutti i file passati come argomento
 		if (numParam > 1){
 			for(int i = 1; i < numParam; i++)
 				leggiFile(args[i]);
-		} else if (numParam == 1){
-			//Altrimenti leggi dallo standard input
-			cout << "\nNessun argomento utilizzato, leggo da stdin\n\n";
-			cout << "Ricordarsi che i dati vanno formattati con le informazioni correttamente. Esempio:\n";
-			cout << "#FORMATO_D\n" << "#NUMDATI_3\n" << "03.1\n" << "2.4\n" << "2.67\n\n";
-			leggiFile("/dev/fd/0");
 		}
-
 	} catch (exception &e) {
 		cout << e.what() << endl;
 		return -1;
@@ -75,7 +68,7 @@ int main(int numParam, char* args[]) {
  * @throw: string
  * @return: void
  */
-inline void leggiFile(char const * const NomeFile) throw(std::string){
+inline void leggiFile(char const * const NomeFile) throw(std::string) {
 	using namespace std;
 
 	fstream FileDati;//FileStream

@@ -159,9 +159,9 @@ public:
 
 private:
 	//Bit-Mask per i vari stati dei dati 1=Ordinati
-	bitmask flagStato = 0b00000000;
+	bitmask flagStato = 0;
 
-	bit bitDatiOrdinati = 0b00000001;
+	bit bitDatiOrdinati = 1;
 
 	double dMedia = nan("");
 	double dDeviazioneStandardCamp = nan("");
