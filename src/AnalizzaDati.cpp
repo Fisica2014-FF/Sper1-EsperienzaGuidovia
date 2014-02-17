@@ -48,11 +48,40 @@ int main(int numParam, char* args[]) {
 	 * 2.4
 	 * 2.67
 	 */
+	const int NUM_FILE = 7;
+	const int NUM_DATIPERFILE = 5;
 	try {
-		if (numParam > 1){
-			for(int i = 1; i < numParam; i++)
-				leggiFile(args[i]);
+		//FD
+		stringstream ss;
+		char nf[20];
+		fstream FileDati;//FileStream
+		using namespace mions::dataAnalisi;
+		for (int i = 1; i < NUM_FILE; ++i) {
+			ss << "d";
+			ss << i*10 + 40;
+			ss << "_15";
+			ss >> nf;
+
+			FileDati.open(nf, fstream::in | fstream::out);//Apro il file indicato nell'argomento dato via shell
+			if (!FileDati.is_open())
+				throw "Errore: file non aperto";
+
+			//TODO: Un Vector è un contenitore, una specie di array ridimensionabile automaticamente
+			vector<double> dati(NUM_DATIPERFILE);// TODO: Array (un Vector in realtà) dei dati.
+
+			// File normale, un double per riga
+			// Range-for: PER CIASCUN elemento &dato IN data, fai...
+			// Notare come lo abbiamo preso per referenza, così da poterlo modificare
+			for (double& dato : dati)
+				FileDati >> dato;
+
+			cout << "Dati letti. Analizzo..." << endl << endl;
+
+			//TODO: Costruisci la classe che contiene le stime statistiche dei dati (andatevi a leggere il file analisiDati.h)
+			AnalisiSingVarOffline_Lazy<double> AnDat(dati, numeroDati);
+
 		}
+		//~FD
 	} catch (exception &e) {
 		cout << e.what() << endl;
 		return -1;
