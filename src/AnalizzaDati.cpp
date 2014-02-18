@@ -16,6 +16,7 @@
 #include <string>
 #include <cstdlib>
 #include <algorithm>//Sort?
+#include <string>
 #include <sstream>//StringStream
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -48,39 +49,47 @@ int main(int numParam, char* args[]) {
 	 * 2.4
 	 * 2.67
 	 */
-	const int NUM_FILE = 7;
+	//Ricordarsi che con 0 gradi l'intervallo era di 20!
+	const int NUM_FILE = 7*3;// 7 file (7 intervalli) per 15, 30, 45 gradi
 	const int NUM_DATIPERFILE = 5;
 	try {
 		//FD
+
 		stringstream ss;
-		char nf[20];
+		string nf;//Nome file da aprire
 		fstream FileDati;//FileStream
 		using namespace mions::dataAnalisi;
-		for (int i = 1; i < NUM_FILE; ++i) {
-			ss << "d";
-			ss << i*10 + 40;
-			ss << "_15";
-			ss >> nf;
+		vector<AnalisiSingVarOffline_Lazy<double> > arrayTempi;
+		arrayTempi.reserve(NUM_DATIPERFILE);
 
-			FileDati.open(nf, fstream::in | fstream::out);//Apro il file indicato nell'argomento dato via shell
-			if (!FileDati.is_open())
-				throw "Errore: file non aperto";
+		for (int i = 1; i <= 3; i++) {
+			for (int j = 1; j <= NUM_FILE; ++j) {
+				ss << "d";
+				ss << j*10 + 40;
+				ss << "_";
+				ss << j*15;
+				ss >> nf;
 
-			//TODO: Un Vector è un contenitore, una specie di array ridimensionabile automaticamente
-			vector<double> dati(NUM_DATIPERFILE);// TODO: Array (un Vector in realtà) dei dati.
+				FileDati.open(nf.c_str(), fstream::in | fstream::out);//Apro il file indicato nell'argomento dato via shell
+				if (!FileDati.is_open())
+					throw "Errore: file non aperto";
 
-			// File normale, un double per riga
-			// Range-for: PER CIASCUN elemento &dato IN data, fai...
-			// Notare come lo abbiamo preso per referenza, così da poterlo modificare
-			for (double& dato : dati)
-				FileDati >> dato;
+				vector<double> tempVect(NUM_DATIPERFILE);// Vector che contiene i dati di un file solo, da cui ricavare il tempo medio
 
-			cout << "Dati letti. Analizzo..." << endl << endl;
+				// File normale, un double per riga
+				// Range-for: PER CIASCUN elemento &dato IN data, fai...
+				// Notare come lo abbiamo preso per referenza, così da poterlo modificare
+				for (double& dato : tempVect)
+					FileDati >> dato;
 
-			//TODO: Costruisci la classe che contiene le stime statistiche dei dati (andatevi a leggere il file analisiDati.h)
-			AnalisiSingVarOffline_Lazy<double> AnDat(dati, numeroDati);
+				cout << "Dati letti. Analizzo..." << endl << endl;
 
+				//AnalisiSingVarOffline_Lazy<double>* pAnDat= new AnalisiSingVarOffline_Lazy<double>(tempVect, NUM_DATIPERFILE);
+				arrayTempi.emplace_back(tempVect, NUM_DATIPERFILE);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore
+			}
 		}
+
+
 		//~FD
 	} catch (exception &e) {
 		cout << e.what() << endl;
@@ -92,6 +101,40 @@ int main(int numParam, char* args[]) {
 	//cout << "\n";
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FORSE LA TOGLIAMO
 /**legge il file di dati formattato "NomeFile" e analizza i dati ivi contenuti
  * @param: NomeFile, nome del file da aprire
  * @throw: string
