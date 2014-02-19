@@ -15,16 +15,22 @@ typedef const char bit;
 namespace dataAnalisi {
 using std::vector;
 
+///////////////////////
+//					 //
+//	  VERSIONE 1.1	 //
+//					 //
+///////////////////////
 
-//Classe per l'analisi di UNA variabile statistica offline, cioè avendo accesso a tutti i dati fin dall'inizio
-//TODO: Dovrebbe essere con la lazy evalutation
+// Classe per l'analisi di UNA variabile statistica offline, cioè avendo accesso a tutti i dati fin dall'inizio
+// O anche, che "rappresenta" una variabile statistica
+// TODO: Dovrebbe essere con la lazy evalutation
 template <class T>
-class AnalisiSingVarOffline_Lazy {
+class VarStat {
 public:
 	vector<T> vectDati;
 	//Costruttore
-	AnalisiSingVarOffline_Lazy(const vector<T>& aDati, bool eliminaTreSigma = true) {
-		vectDati = aDati;//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo
+	VarStat(const vector<T>& aDati, bool eliminaTreSigma = true) {
+		vectDati = aDati;//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo. O no? NOOO!!!
 		int numDati = vectDati.size();
 
 		dMedia=(double)vectDati[0];
@@ -182,6 +188,8 @@ private:
 		}
 	}
 };
+
+
 
 }//Fine DataAnalisi
 

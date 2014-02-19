@@ -21,7 +21,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////
 //le mie classi
-#include "mylib/analisiDati.h"//Le mie classi Template per l'analisi dati
+#include "mylib/AnalisiDati/VarStat.h"//Le mie classi Template per l'analisi dati
 #define VERSIONE 0.1
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -51,18 +51,18 @@ int main(int numParam, char* args[]) {
 	 */
 	//Ricordarsi che con 0 gradi l'intervallo era di 20!
 	const int NUM_FILE = 7*3;// 7 file (7 intervalli) per 15, 30, 45 gradi
-	const int NUM_DATIPERFILE = 5;
+	const int NUM_DATIPERFILE = 5;// 5 dati in ogni file
+	const int ANGOLI_NUM = 3;//15, 30, 45. 0 lo faremo a parte perchè ha un intervallo da venti cm
 	try {
-		//FD
-
 		stringstream ss;
 		string nf;//Nome file da aprire
 		fstream FileDati;//FileStream
 		using namespace mions::dataAnalisi;
-		vector<AnalisiSingVarOffline_Lazy<double> > arrayTempi;
+		vector<VarStat<double> > arrayTempi;
 		arrayTempi.reserve(NUM_DATIPERFILE);
 
-		for (int i = 1; i <= 3; i++) {
+		//Apri i ddati senza peso
+		for (int i = 1; i <= ANGOLI_NUM; i++) {
 			for (int j = 1; j <= NUM_FILE; ++j) {
 				ss << "d";
 				ss << j*10 + 40;
@@ -88,9 +88,6 @@ int main(int numParam, char* args[]) {
 				arrayTempi.emplace_back(tempVect, NUM_DATIPERFILE);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore
 			}
 		}
-
-
-		//~FD
 	} catch (exception &e) {
 		cout << e.what() << endl;
 		return -1;
@@ -213,7 +210,7 @@ inline void leggiFile(char const * const NomeFile) throw(std::string) {
 
 	using namespace mions::dataAnalisi;
 	//TODO: Costruisci la classe che contiene le stime statistiche dei dati (andatevi a leggere il file analisiDati.h)
-	AnalisiSingVarOffline_Lazy<double> AnDat(dati, numeroDati);
+	VarStat<double> AnDat(dati, numeroDati);
 
 	cout << "Numero dati: " << AnDat.getNumeroDatiEffettivo() << endl;
 	cout << "Media: "<< AnDat.getMedia() << endl;
@@ -243,7 +240,7 @@ inline void leggiFile(char const * const NomeFile) throw(std::string) {
 			cout << "" << endl;
 			vector<double> TempVect(dati.begin() + 99 * i, dati.begin() + 99 * (i+1));
 			classiDati.push_back(TempVect);
-			AnalisiSingVarOffline_Lazy<double> AnDatClassi(classiDati[i], false);
+			VarStat<double> AnDatClassi(classiDati[i], false);
 
 			//Misure precedenti
 			double media_precedente = media_attuale;
