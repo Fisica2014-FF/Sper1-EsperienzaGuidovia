@@ -61,6 +61,31 @@ int main(int numParam, char* args[]) {
 		vector<VarStat<double> > arrayTempi;
 		arrayTempi.reserve(NUM_DATIPERFILE);
 
+
+
+
+
+
+
+
+		//TODO: Test
+		vector<double> v1 = {1,1,1,100000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,2,1,3,2};
+		VarStat<double> AnDat(v1,true);
+
+		cout << "Numero dati: " << AnDat.getNumeroDatiEffettivo() << endl;
+		cout << "Media: "<< AnDat.getMedia() << endl;
+		//cout << "Mediana: "<< AnDat.getMediana() << endl;
+		cout << "Varianza del campione: " << AnDat.getVarianzaCampione() << endl;
+		cout << "Deviazione standard campione: " << AnDat.getDeviazioneStandardCamp() << endl;
+		cout << "Varianza della popolazione: " << AnDat.getVarianzaPopolazione() << endl;
+		cout << "Deviazione standard popolazione: " << AnDat.getDeviazioneStandardPop() << endl;
+		cout << "Errore della media: " << AnDat.getErroreMedia() << endl;
+		cout << "Massimo: "<< AnDat.getMax() << endl;
+		cout << "Minimo: "<< AnDat.getMin() << endl;
+
+
+		return 0;
+
 		//Apri i ddati senza peso
 		for (int i = 1; i <= ANGOLI_NUM; i++) {
 			for (int j = 1; j <= NUM_FILE; ++j) {
@@ -85,7 +110,9 @@ int main(int numParam, char* args[]) {
 				cout << "Dati letti. Analizzo..." << endl << endl;
 
 				//AnalisiSingVarOffline_Lazy<double>* pAnDat= new AnalisiSingVarOffline_Lazy<double>(tempVect, NUM_DATIPERFILE);
-				arrayTempi.emplace_back(tempVect, NUM_DATIPERFILE);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore
+				arrayTempi.emplace_back(tempVect);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore (cioè, manda gli argomenti VarStat dentro al vettore)
+
+
 			}
 		}
 	} catch (exception &e) {
@@ -182,8 +209,7 @@ inline void leggiFile(char const * const NomeFile) throw(std::string) {
 	}
 
 
-	//TODO: Un Vector è un contenitore, una specie di array ridimensionabile automaticamente
-	vector<double> dati(numeroDati);// TODO: Array (un Vector in realtà) dei dati.
+	vector<double> dati(numeroDati);// Array (un Vector in realtà) dei dati.
 
 	//Leggi i dati dal file a seconda del formato indicato all'inizio
 	if (formato == "D") {

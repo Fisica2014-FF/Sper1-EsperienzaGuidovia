@@ -5,59 +5,92 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <limits>
+
+
+
+#ifdef _MIO_DEBUG_
+
+#include <iostream>//Per cerr
+
+#endif
+
+
 
 //Il mio namespace
 namespace mions {
-typedef char bitmask;
-typedef const char bit;
-
 //Classi per l'analisi dei dati statistici
 namespace dataAnalisi {
 using std::vector;
 
 ///////////////////////
 //					 //
-//	  VERSIONE 1.1	 //
+//	  VERSIONE 1.3	 //
 //					 //
 ///////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * Funzioni
+ */
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Classe per l'analisi di UNA variabile statistica offline, cioè avendo accesso a tutti i dati fin dall'inizio
 // O anche, che "rappresenta" una variabile statistica
 // TODO: Dovrebbe essere con la lazy evalutation
 template <class T>
 class VarStat {
 public:
-	vector<T> vectDati;
+	//vector<T> vectDati;
 	//Costruttore
 	VarStat(const vector<T>& aDati, bool eliminaTreSigma = true) {
-		vectDati = aDati;//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo. O no? NOOO!!!
-		int numDati = vectDati.size();
+		//aDati = {1,2,3};//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo. O no? NOOO!!!
+		int numDatiIniziale = aDati.size();
+		vector<int> ListaDatifuori3Sigma; //0.003 = 100% - 99.7% = percentuale atttesa di fuori sigma, più spazio a caso
 
-		dMedia=(double)vectDati[0];
-		dMax=(double)vectDati[0];
-		dMin=(double)vectDati[0];
+		//Se il vettore è vuoto la random variable è 0 +- 0 Buona idea?
+		if (numDatiIniziale == 0) {
 
-		for(int i=0; i < numDati; i++){
-			//Media
-			dMedia=(i*dMedia+(double)vectDati[i])/(i+1);
+			#ifdef _MIO_DEBUG_
+			std::cerr << "Vettore vuoto, metto la variabile a zero+-zero";
+			#endif
 
-			//Massimo e minimo (ottimizzabile?)
-			dMax = (vectDati[i] > dMax) ? vectDati[i] : dMax;
-			dMin = (vectDati[i] < dMin) ? vectDati[i] : dMin;
+			iNumero_dati = 0;
+			dMedia = 0;
+			dDeviazioneStandardCamp = 0;
+			dDeviazioneStandardPop = 0;
+			dVarianzaCampione = 0;
+			dVarianzaPopolazione = 0;
+			dMax = 0;//Oppure +INFINITY
+			dMin = 0;//O -INFINITY
+			dErroreMedia = 0;
+			return;
 		}
 
-		dVarianzaCampione=pow(((double)vectDati[0]-dMedia),2);
-		for(int i=0; i < numDati; i++){
+		dMedia=(double)aDati[0];
+		dMax=(double)aDati[0];
+		dMin=(double)aDati[0];
+
+		for(int i=0; i < numDatiIniziale; i++){
+			//Media
+			dMedia=(i*dMedia+(double)aDati[i])/(i+1);
+
+			//Massimo e minimo (ottimizzabile?)
+			dMax = (aDati[i] > dMax) ? aDati[i] : dMax;
+			dMin = (aDati[i] < dMin) ? aDati[i] : dMin;
+		}
+
+		dVarianzaCampione=pow(((double)aDati[0]-dMedia),2);
+		for(int i=0; i < numDatiIniziale; i++){
 			//Varianza
-			dVarianzaCampione=(i*dVarianzaCampione+pow(((double)vectDati[i]-dMedia),2)) /
+			dVarianzaCampione=(i*dVarianzaCampione+pow(((double)aDati[i]-dMedia),2)) /
 					(i+1);
 		}
 
 		dDeviazioneStandardCamp = sqrt(dVarianzaCampione);
 
 		//se sigma2c=S/N e sigma2p=S/(N-1), allora, sostituendo S e risolvendo, sigma2p=sigma2c*N/(N-1)
-		dVarianzaPopolazione = dVarianzaCampione*double(numDati)/(double(numDati)-1);
-
+		dVarianzaPopolazione = dVarianzaCampione*double(numDatiIniziale)/(double(numDatiIniziale)-1);
+		iNumero_dati = aDati.size();
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Se eliminaTreSigma è true, rifai i conti togliendo i dati inaccettabili
 		if (eliminaTreSigma){
@@ -72,53 +105,69 @@ public:
 			 * Non incrementiamo l'iteratore (pDato++) nell'istruzione for, invece lo assegnamo nel ciclo
 			 */
 			int numCancellazioni = 0;
-			for (typename vector<T>::iterator pDato = vectDati.begin();
-					pDato != vectDati.end();)
+			int i = 0;
+			for (typename vector<T>::const_iterator pDato = aDati.begin();
+					pDato != aDati.end();
+					pDato++, i++)// i indica l'offset dall'inizio del vector, lo useremo dopo per verificare i dati
 			{
-				//TODO: Usando 9*varianza forse si risparmiano conti
-				if (abs(dMedia - *pDato ) >= 3*dDeviazioneStandardCamp) {
+				//TODO: Finire
+				//i++;//Per mettere gli offset degli iterator, probabilmente si può mettere nel ciclo direttamente a questo punto
+				if (abs(dMedia - (*pDato) ) >= 3*dDeviazioneStandardCamp) {
 					/* Cancelliamo dal Vector i dati inaccettabili. Operazione costosa perchè i dati successivi vengono traslati
 					 * indietro, ma è meglio un Vector di una LinkedList perchè i dati possono essere messi nella cache e occuma meno memoria.
 					 * erase richiede un iterator, quindi siamo "costretti" a usarlo
 					 */
 					std::cout << "Eliminato dato: " << *pDato << "\n";
 
-					//Erase restituisce l'iteratore dell'elemento successivo a quelli appena cancellati
-					pDato = vectDati.erase(pDato);
+					ListaDatifuori3Sigma.push_back(i);//Aggiungi il dato nella posizione i alla lista degli "incriminati"
 
 					numCancellazioni = numCancellazioni + 1;
-				} else {
-					//Passiamo all'elemento successivo
-					pDato++;
 				}
 			}
 			std::cout << "Cancellati " << numCancellazioni << " dati\n\n";
-
-			//Rifacciamo i conti
-			numDati = vectDati.size();
-			dMedia=(double)vectDati[0];
-			dMax=(double)vectDati[0];
-			dMin=(double)vectDati[0];
-
-			for(int i=0; i < numDati; i++) {
-				//Media
-				dMedia=(i*dMedia+(double)vectDati[i])/(i+1);
-
-				//Massimo e minimo
-				dMax = (vectDati[i] > dMax) ? vectDati[i] : dMax;
-				dMin = (vectDati[i] < dMin) ? vectDati[i] : dMin;
+			for (int k = 0; k < numCancellazioni+1; ++k) {
+				std::cerr << ListaDatifuori3Sigma[k] << std::endl;
 			}
 
-			dVarianzaCampione=pow(((double)vectDati[0]-dMedia),2);
-			for(int i=0; i < numDati; i++) {
+			//Rifacciamo i conti
+			numDatiIniziale = aDati.size();
+			dMedia=(double)aDati[0];
+			dMax=(double)aDati[0];
+			dMin=(double)aDati[0];
+
+			// j è l'indice del vettore che contiene gli indici dei dati da scartare. Ovviamente si suppone che questi siano ordinati e strettamente meno di numDatiIniziale
+			int j = 0;
+			for(int i=0; i < numDatiIniziale; i++) {
+				//Media
+				//Se il dato è buono prosegui coi calcoli
+				if (i != *(ListaDatifuori3Sigma.begin() + j) ) {
+					dMedia=(i*dMedia+(double)aDati[i])/(i+1);
+
+					//Massimo e minimo
+					dMax = (aDati[i] > dMax) ? aDati[i] : dMax;
+					dMin = (aDati[i] < dMin) ? aDati[i] : dMin;
+				} else {
+					//Il dato è da scartare, prosegui con quello successivo (e avanza al prossimo numero nella lista, intanto)
+					j++;
+				}
+			}
+
+			// Di nuovo j
+			j=0;
+			dVarianzaCampione=pow(((double)aDati[0]-dMedia),2);
+			for(int i=0; i < numDatiIniziale; i++) {
 				//Varianza
-				dVarianzaCampione=(i*dVarianzaCampione+pow(((double)vectDati[i]-dMedia),2)) /
-						(i+1);
+				if (i != *(ListaDatifuori3Sigma.begin() + j)) {
+					dVarianzaCampione=(i*dVarianzaCampione+pow(((double)aDati[i]-dMedia),2)) /
+							(i+1);
+				} else {
+					j++;
+				}
 			}
 			dDeviazioneStandardCamp = sqrt(dVarianzaCampione);
 
 			//se sigma2c=S/N e sigma2p=S/(N-1), allora, sostituendo S e risolvendo, sigma2p=sigma2c*N/(N-1)
-			dVarianzaPopolazione = dVarianzaCampione*double(numDati)/(double(numDati)-1);
+			dVarianzaPopolazione = dVarianzaCampione*double(numDatiIniziale)/(double(numDatiIniziale)-1);
 
 		}//EndIf
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,68 +175,158 @@ public:
 
 		//Deviazione standard popolazione
 		dDeviazioneStandardPop=sqrt(dVarianzaPopolazione);
+		iNumero_dati = numDatiIniziale - ListaDatifuori3Sigma.size();
 	}
+
+	//Distruttore
+	virtual ~VarStat() = default;//Virtual perchè devono ereditare da questa. Lecito il default? Bè compila
 
 	//Getters
-	double getMedia() const {return dMedia;};
+	inline double getMedia() const {return dMedia;};
 	//Scarto Quadratico Medio (N)
-	double getDeviazioneStandardCamp() const {return dDeviazioneStandardCamp;};
+	inline double getDeviazioneStandardCamp() const {return dDeviazioneStandardCamp;};
 	//Errore Quadrato Medio N-1
-	double getDeviazioneStandardPop() const {return dDeviazioneStandardPop;};
+	inline double getDeviazioneStandardPop() const {return dDeviazioneStandardPop;};
 	//Su Excel sono invertite, cioè per varianza del campione io intendo la varianza propria dei dati
-	double getVarianzaCampione() const {return dVarianzaCampione;}
+	inline double getVarianzaCampione() const {return dVarianzaCampione;}
 	//Su Excel sono invertite, cioè per varianza popolazione io considero implicitamente i dati come un campione quindi
 	//la varianzaPopolazione è calcolata fratto N-1
-	double getVarianzaPopolazione() const {return dVarianzaPopolazione;}
+	inline double getVarianzaPopolazione() const {return dVarianzaPopolazione;}
 	//double getMediana() ordina i dati come side effect
-	double getMediana() {
-		if (dMediana != 0) {
-			return dMediana;
-		}
-		else
-		{
-			ordinaDati();
-			int numDati = getNumeroDatiEffettivo();
-			if (numDati % 2 == 1) {
-				return dMediana = (double)vectDati[(numDati-1)/2];
-			} else {
-				return dMediana = (double)(vectDati[numDati/2-1]+vectDati[numDati/2])/2;
-			}
-		}
+	//Tolta
+	inline double getMax() const {return dMax;}
+	inline double getMin() const {return dMin;}
+	// Errore della media
+	inline double getErroreMedia() {return (dErroreMedia != -INFINITY ? dErroreMedia : dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo());}
+	long getNumeroDatiEffettivo() const {return iNumero_dati;}
+	//Range della variabile
+	inline long getRange() const {return dMax - dMin;}
+	//double getModa() const {return dModa;}
+
+	//Operatori
+	//Somma una variabile statistica a un'altra e memorizzala nella prima. Vedi commento su -=, sotto
+	inline VarStat<T>& operator+=(const VarStat<T>& rhs) {
+		//Obiettivo: dare gli stessi risultati come se avessi sommato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
+		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sommando i singoli elementi fra loro
+		dMedia = rhs.getMedia() + getMedia();//Somma le medie delle due variabili
+		dVarianzaCampione = pow(rhs.getVarianzaCampione(),2) + pow(getVarianzaCampione(),2);//Propagazione dell'errore
+		dVarianzaPopolazione = pow(rhs.getVarianzaPopolazione(),2) + pow(getVarianzaPopolazione(),2);
+
+		//La nuova varianza permette di calcolare direttamente la nuova std
+		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
+		dDeviazioneStandardPop = sqrt(getVarianzaPopolazione());
+
+		// Il massimo della somma è la somma dei due massimi
+		// Worst-case max? Non ben definito, ma se ho due set di dati, il massimo (tra tutte le possibilità) è la somma dei due massimi precedenti
+		dMax = rhs.getMax() +getMax();
+
+		//Idem per il minimo, il minimo "minore" è la somma dei minimi
+		dMin = rhs.getMin() + getMin();
+
+		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		return *this;	//Idiozia ma dicono che serva
 	}
 
-	double getMax() const {return dMax;}
-	double getMin() const {return dMin;}
-	//TODO: If a basso costo per via della BPU
-	double getErroreMedia() {return (dErroreMedia != 0 ? dErroreMedia : dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo());}
-	long getNumeroDatiEffettivo() const {return vectDati.size();}
-	//double getModa() const {return dModa;}
+	//Sottrai una variabile statistica a un'altra e memorizzala nella prima. v1 -= v2 è come v.operator-=(v2), quindi le funzioni get, etc qui dentro si riferiscono a v1!!! E rhs.get... a v2
+
+	inline VarStat<T>& operator-=(const VarStat<T>& rhs) {
+		//TODO: Possibile farlo come lhs += (-1)*rhs ?
+		//Obiettivo: dare gli stessi risultati come se avessi sottratto i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
+		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sottraendo i singoli elementi fra loro
+		dMedia = getMedia() - rhs.getMedia();//Sottrai le medie delle due variabili
+		dVarianzaCampione = pow(rhs.getVarianzaCampione(),2) + pow(getVarianzaCampione(),2);//Propagazione dell'errore
+		dVarianzaPopolazione = pow(rhs.getVarianzaPopolazione(),2) + pow(getVarianzaPopolazione(),2);
+
+		//La nuova varianza permette di calcolare direttamente la nuova std
+		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
+		dDeviazioneStandardPop = sqrt(getVarianzaPopolazione());
+
+		//Worst-case min
+		// Il massimo della differenza è la differenza tra il valore più alto del minuendo e quello più basso del sottraendo
+		dMax = getMax() - rhs.getMin();
+
+		//Il minimo "minore" è il minimo del minuendo a cui abbiamo tolto il più possibile, cioè il massimo del sottraendo
+		dMin = getMin() - rhs.getMax();
+
+		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		return *this;	//Idiozia ma dicono che serva
+	}
+
+	//Moltiplicazione per scalare, compound assignment. v *= d è come v.operator*=(d), quindi le funzioni get, etc qui dentro si riferiscono a v
+	inline VarStat<T>& operator*=(const double& rhs) {
+		//Obiettivo: dare gli stessi risultati come se avessi preso tutti i dati e, moltiplicato ciascuno per rhs, li avessi passati a lhs
+		dMedia = rhs * getMedia();//Moltiplica la media della VarStat a sinistra del simbolo per il double a destra
+		dVarianzaCampione = rhs * rhs * getVarianzaCampione();
+		dVarianzaPopolazione = rhs * rhs * getVarianzaPopolazione();
+		dDeviazioneStandardCamp = abs(rhs) * getDeviazioneStandardCamp();
+		dDeviazioneStandardPop = abs(rhs) * getDeviazioneStandardCamp();
+
+		//Se moltiplico per uno scalare negativo, il minimo nei positivi diventa il massimo nei negativi (es se min=-20 e max=40, se li moltiplico per -2 allora min=-40 e max=20)
+		dMax = (rhs >= 0 ? rhs * getMax() : rhs * getMin());
+		dMin = (rhs >= 0 ? rhs * getMin() : rhs * getMax());
+
+		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		return *this;	//Idiozia ma dicono che serva
+	}
+
+	//Somma di due VarStat
+	//Trucchetto per riutilizzare il lavoro svolto con +=
+	const VarStat<T> operator+(const VarStat<T> &other) const {
+		VarStat<T> result = *this; // Copia il primo oggettp
+		result += other;            // Aggiungici dentro l'altro
+		return result;              // Ritorna il risultato
+	}
+
+	//Sottrazione di due VarStat
+	//Trucchetto per riutilizzare il lavoro svolto con -=
+	const VarStat<T> operator-(const VarStat<T>& other) const {
+		VarStat<T> result = *this; // Copia il primo oggettp
+		result -= other;            // Aggiungici dentro l'altro
+		return result;              // Ritorna il risultato
+	}
+
+	//
+	std::ostream& operator<<(std::ostream& out) {
+		using namespace std;
+		cout << getNumeroDatiEffettivo() << "Numero dati: " << endl;
+		cout << getMedia() << "Media: " << endl;
+		//cout << "Mediana: "<< AnDat.getMediana() << endl;
+		cout << getVarianzaCampione() << "Varianza del campione: " << endl;
+		cout << getDeviazioneStandardCamp() << "Deviazione standard campione: " << endl;
+		cout << getVarianzaPopolazione() << "Varianza della popolazione: " << endl;
+		cout << getDeviazioneStandardPop() << "Deviazione standard popolazione: " << endl;
+		cout << getErroreMedia() << "Errore della media: " << endl;
+		cout << getMax() << "Massimo: " << endl;
+		cout << getMin() << "Minimo: " << endl;
+		return out;
+	}
+	;
+
+	//Moltiplicazione per uno scalare
+	//Trucchetto per riutilizzare il lavoro svolto con *= double,
+	const VarStat<T> operator*(const double rhs) const {
+		VarStat<T> result = *this; // Copia il primo oggettp
+		result *= rhs;            // Aggiungici dentro l'altro
+		return result;              // Ritorna il risultato
+	}
 
 private:
 	//Bit-Mask per i vari stati dei dati 1=Ordinati
-	bitmask flagStato = 0;
 
-	bit bitDatiOrdinati = 1;
-
-	double dMedia = nan("");
-	double dDeviazioneStandardCamp = nan("");
-	double dDeviazioneStandardPop = nan("");
-	double dVarianzaCampione = nan("");
-	double dVarianzaPopolazione = nan("");
-	double dMediana = 0;
-	double dMax = nan("");
-	double dMin = nan("");
-	double dErroreMedia = 0;
+	double dMedia = -INFINITY;
+	double dDeviazioneStandardCamp = -INFINITY;
+	double dDeviazioneStandardPop = -INFINITY;
+	double dVarianzaCampione = -INFINITY;
+	double dVarianzaPopolazione = -INFINITY;
+	//double dMediana = -INFINITY;
+	double dMax = -INFINITY;
+	double dMin = -INFINITY;
+	double dErroreMedia = -INFINITY;
+	int iNumero_dati = 0;
 	//double dModa=0;
 
-	//TODO Idea: un altro array di int con l'ordine dei dati
-	inline void ordinaDati() {
-		if ((flagStato & bitDatiOrdinati) != bitDatiOrdinati) {
-			std::sort(vectDati.begin(),vectDati.end());
-			flagStato = flagStato | bitDatiOrdinati;
-		}
-	}
 };
+
 
 
 
