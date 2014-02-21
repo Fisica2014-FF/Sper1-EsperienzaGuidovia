@@ -13,8 +13,11 @@
 
 #include <iostream>//Per cerr
 
-#endif
+//Stampa il nome della variabile
+#define VNAME(x) #x
+#define VDUMP(x) std::clog << #x << " " << x << std::endl
 
+#endif
 
 
 //Il mio namespace
@@ -28,12 +31,56 @@ using std::vector;
 //	  VERSIONE 1.3	 //
 //					 //
 ///////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- * Funzioni
- */
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * Forward declarations
+ */
+template <typename> class VarStat;//Forward declaration da usare nella funzione operator<<
+
+template <typename T> const VarStat<T> operator*(const double& , const VarStat<T> );
+template <typename T> const VarStat<T> operator*(const VarStat<T> , const double& );
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Versione
+template <typename U>
+std::ostream& operator <<(std::ostream& os, const VarStat<U>& rhs) {
+	using namespace std;
+
+	//Eclipse dà problemi con endl, modifichiamolo temporaneamente
+	#define endl "\n"
+	cout << endl;
+	cout << "Numero dati:                       " << rhs.getNumeroDatiEffettivo() << endl;
+	cout << "Media:                             " << rhs.getMedia() << endl;
+	//cout << "Mediana:                           " << rhs.getMediana() << endl;
+	cout << "Varianza del campione:             " << rhs.getVarianzaCampione() << endl;
+	cout << "Deviazione standard campione:      " << rhs.getDeviazioneStandardCamp() << endl;
+	cout << "Varianza della popolazione:        " << rhs.getVarianzaPopolazione() << endl;
+	cout << "Deviazione standard popolazione:   " << rhs.getDeviazioneStandardPop() << endl;
+	cout << "Errore della media:                " << rhs.getErroreMedia() << endl;
+	cout << "Massimo:                           " << rhs.getMax() << endl;
+	cout << "Minimo:                            " << rhs.getMin() << endl;
+	#undef endl
+
+	return os;
+
+}
+
+//Moltiplicazione a destra per uno scalare
+template <typename U>
+inline const VarStat<U> operator*(const VarStat<U> lhs, const double& rhs) {
+	VarStat<U> result = lhs; // Copia il primo oggettp
+	result *= rhs;            // Aggiungici dentro l'altro
+	return result;              // Ritorna il risultato
+}
+
+//Moltiplicazione a sinistra per uno scalare
+template <typename U>
+inline const VarStat<U> operator*(const double& lhs, const VarStat<U> rhs) {
+	return (rhs*lhs);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Classe per l'analisi di UNA variabile statistica offline, cioè avendo accesso a tutti i dati fin dall'inizio
 // O anche, che "rappresenta" una variabile statistica
 // TODO: Dovrebbe essere con la lazy evalutation
@@ -41,6 +88,11 @@ template <class T>
 class VarStat {
 public:
 	//vector<T> vectDati;
+	//Funzioni overloaded
+	friend std::ostream& operator<<<T>(std::ostream& , const VarStat<T>& );
+	friend const VarStat<T> operator*<T>(const VarStat<T> , const double& );
+	friend const VarStat<T> operator*<T>(const double& , const VarStat<T> );
+
 	//Costruttore
 	VarStat(const vector<T>& aDati, bool eliminaTreSigma = true) {
 		//aDati = {1,2,3};//La classe ha una copia del vector! Non dei dati! Copiare un vector non è troppo impegnativo. O no? NOOO!!!
@@ -51,7 +103,7 @@ public:
 		if (numDatiIniziale == 0) {
 
 			#ifdef _MIO_DEBUG_
-			std::cerr << "Vettore vuoto, metto la variabile a zero+-zero";
+			std::clog << "Vettore vuoto, metto la variabile a zero+-zero";
 			#endif
 
 			iNumero_dati = 0;
@@ -91,10 +143,11 @@ public:
 		//se sigma2c=S/N e sigma2p=S/(N-1), allora, sostituendo S e risolvendo, sigma2p=sigma2c*N/(N-1)
 		dVarianzaPopolazione = dVarianzaCampione*double(numDatiIniziale)/(double(numDatiIniziale)-1);
 		iNumero_dati = aDati.size();
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Se eliminaTreSigma è true, rifai i conti togliendo i dati inaccettabili
+		int numCancellazioni = 0;
 		if (eliminaTreSigma){
-			std::cout << "Elimino i dati oltre 3 sigma...\n" ;
+			std::clog << "Elimino i dati oltre 3 sigma...\n" ;
 			/* pDato è un tipo vector<double>::iterator, e si comporta come un puntatore a un elemento dell'array
 			 * Sarebbe più leggibile scrivere "auto pDato = vectDati.begin();", ma per chiarezza mettiamo il tipo completo
 			 *
@@ -104,7 +157,6 @@ public:
 			 *
 			 * Non incrementiamo l'iteratore (pDato++) nell'istruzione for, invece lo assegnamo nel ciclo
 			 */
-			int numCancellazioni = 0;
 			int i = 0;
 			for (typename vector<T>::const_iterator pDato = aDati.begin();
 					pDato != aDati.end();
@@ -117,15 +169,19 @@ public:
 					 * indietro, ma è meglio un Vector di una LinkedList perchè i dati possono essere messi nella cache e occuma meno memoria.
 					 * erase richiede un iterator, quindi siamo "costretti" a usarlo
 					 */
-					std::cout << "Eliminato dato: " << *pDato << "\n";
+					std::clog << "Eliminato dato: " << *pDato << "\n";
 
 					ListaDatifuori3Sigma.push_back(i);//Aggiungi il dato nella posizione i alla lista degli "incriminati"
 
 					numCancellazioni = numCancellazioni + 1;
 				}
 			}
-			std::cout << "Cancellati " << numCancellazioni << " dati\n\n";
-			for (int k = 0; k < numCancellazioni+1; ++k) {
+			std::clog << "Cancellati " << numCancellazioni << " dati\n\n";
+		}//EndIf
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		if ( !(ListaDatifuori3Sigma.empty())) {
+			for (int k = 0; k < numCancellazioni; ++k) {
 				std::cerr << ListaDatifuori3Sigma[k] << std::endl;
 			}
 
@@ -169,14 +225,15 @@ public:
 			//se sigma2c=S/N e sigma2p=S/(N-1), allora, sostituendo S e risolvendo, sigma2p=sigma2c*N/(N-1)
 			dVarianzaPopolazione = dVarianzaCampione*double(numDatiIniziale)/(double(numDatiIniziale)-1);
 
-		}//EndIf
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		}//EndIf del ricalcolo
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//Deviazione standard popolazione
 		dDeviazioneStandardPop=sqrt(dVarianzaPopolazione);
 		iNumero_dati = numDatiIniziale - ListaDatifuori3Sigma.size();
-	}
+		dErroreMedia = dDeviazioneStandardPop / sqrt(iNumero_dati);
+
+	}//Fine costruttore
 
 	//Distruttore
 	virtual ~VarStat() = default;//Virtual perchè devono ereditare da questa. Lecito il default? Bè compila
@@ -197,7 +254,7 @@ public:
 	inline double getMax() const {return dMax;}
 	inline double getMin() const {return dMin;}
 	// Errore della media
-	inline double getErroreMedia() {return (dErroreMedia != -INFINITY ? dErroreMedia : dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo());}
+	inline double getErroreMedia() const {return dErroreMedia;}
 	long getNumeroDatiEffettivo() const {return iNumero_dati;}
 	//Range della variabile
 	inline long getRange() const {return dMax - dMin;}
@@ -223,7 +280,7 @@ public:
 		//Idem per il minimo, il minimo "minore" è la somma dei minimi
 		dMin = rhs.getMin() + getMin();
 
-		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		dErroreMedia = sqrt(pow(rhs.getErroreMedia(),2) + pow(getErroreMedia(),2));
 		return *this;	//Idiozia ma dicono che serva
 	}
 
@@ -248,7 +305,7 @@ public:
 		//Il minimo "minore" è il minimo del minuendo a cui abbiamo tolto il più possibile, cioè il massimo del sottraendo
 		dMin = getMin() - rhs.getMax();
 
-		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		dErroreMedia = sqrt(pow(rhs.getErroreMedia(),2) + pow(getErroreMedia(),2));;
 		return *this;	//Idiozia ma dicono che serva
 	}
 
@@ -262,10 +319,12 @@ public:
 		dDeviazioneStandardPop = abs(rhs) * getDeviazioneStandardCamp();
 
 		//Se moltiplico per uno scalare negativo, il minimo nei positivi diventa il massimo nei negativi (es se min=-20 e max=40, se li moltiplico per -2 allora min=-40 e max=20)
-		dMax = (rhs >= 0 ? rhs * getMax() : rhs * getMin());
-		dMin = (rhs >= 0 ? rhs * getMin() : rhs * getMax());
+		T tMax = dMax;//Massimo temporaneo, perchè quando calcoliamo dMin è già stato modificato dmax
+		T tMin = dMin;
+		dMax = (rhs >= 0 ? rhs * tMax : rhs * tMin);
+		dMin = (rhs >= 0 ? rhs * tMin : rhs * tMax);
 
-		dErroreMedia = getVarianzaPopolazione() / getNumeroDatiEffettivo();
+		dErroreMedia = rhs*rhs*getErroreMedia();
 		return *this;	//Idiozia ma dicono che serva
 	}
 
@@ -285,33 +344,15 @@ public:
 		return result;              // Ritorna il risultato
 	}
 
-	//
-	std::ostream& operator<<(std::ostream& out) {
-		using namespace std;
-		cout << getNumeroDatiEffettivo() << "Numero dati: " << endl;
-		cout << getMedia() << "Media: " << endl;
-		//cout << "Mediana: "<< AnDat.getMediana() << endl;
-		cout << getVarianzaCampione() << "Varianza del campione: " << endl;
-		cout << getDeviazioneStandardCamp() << "Deviazione standard campione: " << endl;
-		cout << getVarianzaPopolazione() << "Varianza della popolazione: " << endl;
-		cout << getDeviazioneStandardPop() << "Deviazione standard popolazione: " << endl;
-		cout << getErroreMedia() << "Errore della media: " << endl;
-		cout << getMax() << "Massimo: " << endl;
-		cout << getMin() << "Minimo: " << endl;
-		return out;
-	}
-	;
-
 	//Moltiplicazione per uno scalare
 	//Trucchetto per riutilizzare il lavoro svolto con *= double,
-	const VarStat<T> operator*(const double rhs) const {
-		VarStat<T> result = *this; // Copia il primo oggettp
-		result *= rhs;            // Aggiungici dentro l'altro
-		return result;              // Ritorna il risultato
-	}
+//	const VarStat<T> operator*(const double rhs) const {
+//		VarStat<T> result = *this; // Copia il primo oggettp
+//		result *= rhs;            // Aggiungici dentro l'altro
+//		return result;              // Ritorna il risultato
+//	}
 
 private:
-	//Bit-Mask per i vari stati dei dati 1=Ordinati
 
 	double dMedia = -INFINITY;
 	double dDeviazioneStandardCamp = -INFINITY;
