@@ -49,7 +49,6 @@ std::ostream& operator <<(std::ostream& os, const VarStat<U>& rhs) {
 
 	//Eclipse dà problemi con endl, modifichiamolo temporaneamente
 	#define endl "\n"
-	cout << endl;
 	cout << "Numero dati:                       " << rhs.getNumeroDatiEffettivo() << endl;
 	cout << "Media:                             " << rhs.getMedia() << endl;
 	//cout << "Mediana:                           " << rhs.getMediana() << endl;

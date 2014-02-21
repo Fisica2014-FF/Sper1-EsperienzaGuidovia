@@ -24,7 +24,7 @@
 #include "mylib/AnalisiDati/VarStat.h"//Le mie classi Template per l'analisi dati
 #include "mylib/AnalisiDati/SortingVarStat.h"//Le mie classi Template per l'analisi dati
 
-#define VERSIONE 0.1
+#define VERSIONE 0.2
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Prototipi
@@ -43,9 +43,9 @@ int main(int numParam, char* args[]) {
 	const int NUM_DATIPERFILE = 5;// 5 dati in ogni file
 	const int ANGOLI_NUM = 3;//15, 30, 45. 0 lo faremo a parte perchè ha un intervallo da venti cm
 	try {
-		stringstream ss;
+		//stringstream ss;
 		string nf;//Nome file da aprire
-		ifstream FileDati;//FileStream
+		//FileStream
 		fstream FileMedie;//FileStream
 		using namespace mions::dataAnalisi;
 		vector<VarStat<double> > arrayTempi;
@@ -66,14 +66,17 @@ int main(int numParam, char* args[]) {
 //		return 0;
 
 		//Apri i dati senza peso
-		for (int intervallo = 1; intervallo <= NUM_FILE; ++intervallo) {
+		for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
 			for (int angoli = 1; angoli <= ANGOLI_NUM; angoli++) {
-				ss << "./DatiGrezzi/";
+				stringstream ss;
+				ifstream FileDati;
+				ss << "./DatiFormattati/DatiStandardizzati/";
 				ss << "d";
 				ss << intervallo*10 + 40;
 				ss << "_";
 				ss << angoli*15;
 				ss >> nf;
+				//ss.flush();
 
 				clog << nf << endl;
 				FileDati.open(nf.c_str());//Apro il file indicato nell'argomento dato via shell
@@ -86,9 +89,10 @@ int main(int numParam, char* args[]) {
 				// File normale, un double per riga
 				// Range-for: PER CIASCUN elemento &dato IN data, fai...
 				// Notare come lo abbiamo preso per referenza, così da poterlo modificare
-				clog << tempVect.size();
+				clog << tempVect.size() << endl;
 				for (int i = 0; i < tempVect.size(); i++){
 					FileDati >> tempVect[i];
+					clog << "Pos " << i << ": " << tempVect[i] << endl;
 				}
 
 				clog << "Dati letti. Analizzo..." << endl << endl;
@@ -96,7 +100,11 @@ int main(int numParam, char* args[]) {
 				//AnalisiSingVarOffline_Lazy<double>* pAnDat= new AnalisiSingVarOffline_Lazy<double>(tempVect, NUM_DATIPERFILE);
 				arrayTempi.emplace_back(tempVect,true);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore (cioè, manda gli argomenti VarStat dentro al vettore)
 
+				cout << endl;
+				cout << "Nome file: " << nf << endl;
 				cout << arrayTempi.back();
+				ss.clear();
+				FileDati.close();
 			}
 		}
 
