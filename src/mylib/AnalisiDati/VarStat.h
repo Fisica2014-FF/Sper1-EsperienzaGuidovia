@@ -49,16 +49,16 @@ std::ostream& operator <<(std::ostream& os, const VarStat<U>& rhs) {
 
 	//Eclipse dà problemi con endl, modifichiamolo temporaneamente
 	#define endl "\n"
-	cout << "Numero dati:                       " << rhs.getNumeroDatiEffettivo() << endl;
-	cout << "Media:                             " << rhs.getMedia() << endl;
+	os << "Numero dati:                       " << rhs.getNumeroDatiEffettivo() << endl;
+	os << "Media:                             " << rhs.getMedia() << endl;
 	//cout << "Mediana:                           " << rhs.getMediana() << endl;
-	cout << "Varianza del campione:             " << rhs.getVarianzaCampione() << endl;
-	cout << "Deviazione standard campione:      " << rhs.getDeviazioneStandardCamp() << endl;
-	cout << "Varianza della popolazione:        " << rhs.getVarianzaPopolazione() << endl;
-	cout << "Deviazione standard popolazione:   " << rhs.getDeviazioneStandardPop() << endl;
-	cout << "Errore della media:                " << rhs.getErroreMedia() << endl;
-	cout << "Massimo:                           " << rhs.getMax() << endl;
-	cout << "Minimo:                            " << rhs.getMin() << endl;
+	os << "Varianza del campione:             " << rhs.getVarianzaCampione() << endl;
+	os << "Deviazione standard campione:      " << rhs.getDeviazioneStandardCamp() << endl;
+	os << "Varianza della popolazione:        " << rhs.getVarianzaPopolazione() << endl;
+	os << "Deviazione standard popolazione:   " << rhs.getDeviazioneStandardPop() << endl;
+	os << "Errore della media:                " << rhs.getErroreMedia() << endl;
+	os << "Massimo:                           " << rhs.getMax() << endl;
+	os << "Minimo:                            " << rhs.getMin() << endl;
 	#undef endl
 
 	return os;

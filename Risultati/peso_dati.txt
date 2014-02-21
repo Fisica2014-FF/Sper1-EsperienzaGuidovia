@@ -1,0 +1,84 @@
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd50_45
+Numero dati:                       5
+Media:                             0.3678
+Varianza del campione:             1.6e-07
+Deviazione standard campione:      0.0004
+Varianza della popolazione:        2e-07
+Deviazione standard popolazione:   0.000447214
+Errore della media:                0.0002
+Massimo:                           0.368
+Minimo:                            0.367
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd60_45
+Numero dati:                       5
+Media:                             0.6892
+Varianza del campione:             9.6e-07
+Deviazione standard campione:      0.000979796
+Varianza della popolazione:        1.2e-06
+Deviazione standard popolazione:   0.00109545
+Errore della media:                0.000489898
+Massimo:                           0.69
+Minimo:                            0.688
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd70_45
+Numero dati:                       5
+Media:                             0.9748
+Varianza del campione:             5.6e-07
+Deviazione standard campione:      0.000748331
+Varianza della popolazione:        7e-07
+Deviazione standard popolazione:   0.00083666
+Errore della media:                0.000374166
+Massimo:                           0.976
+Minimo:                            0.974
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd80_45
+Numero dati:                       5
+Media:                             1.2344
+Varianza del campione:             6.4e-07
+Deviazione standard campione:      0.0008
+Varianza della popolazione:        8e-07
+Deviazione standard popolazione:   0.000894427
+Errore della media:                0.0004
+Massimo:                           1.236
+Minimo:                            1.234
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd90_45
+Numero dati:                       5
+Media:                             1.4666
+Varianza del campione:             0.00025024
+Deviazione standard campione:      0.015819
+Varianza della popolazione:        0.0003128
+Deviazione standard popolazione:   0.0176862
+Errore della media:                0.00790949
+Massimo:                           1.476
+Minimo:                            1.435
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd100_45
+Numero dati:                       5
+Media:                             1.7004
+Varianza del campione:             6.4e-07
+Deviazione standard campione:      0.0008
+Varianza della popolazione:        8e-07
+Deviazione standard popolazione:   0.000894427
+Errore della media:                0.0004
+Massimo:                           1.702
+Minimo:                            1.7
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cd110_45
+Numero dati:                       5
+Media:                             1.9126
+Varianza del campione:             6.4e-07
+Deviazione standard campione:      0.0008
+Varianza della popolazione:        8e-07
+Deviazione standard popolazione:   0.000894427
+Errore della media:                0.0004
+Massimo:                           1.914
+Minimo:                            1.912
+
