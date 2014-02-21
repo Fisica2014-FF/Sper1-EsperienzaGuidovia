@@ -1,0 +1,23 @@
+Commenti della professoressa alla relazione precedente, NON RIPETERE
+o l'errore conta di più
+
+
+Relazione Pendolo
+
+- impostazione abbastanza organica, esposizione abbastanza chiara;
+
+- obiettivi non del tutto pertinenti, si confonde metodo con scopo;
+
+- tutte le grandezze vanno riportate con errore (vedi semiampiezza di oscillazione);
+
+- specificare sensibilità;
+
+- nei grafici le labe devono indicare anche le unità di misura;
+
+- errato uso delle cifre significative: errore/scarto quadratico medio vanno commensurati alla sensibilità anche nei conti parziali se riportati nella relazione,  grandezze e errori ad esse associate con stesso numero di decimali
+
+- Compatiblità con al massimo 2 cifre significative
+
+- discussione e conclusioni da approfondire
+
+Discreto
