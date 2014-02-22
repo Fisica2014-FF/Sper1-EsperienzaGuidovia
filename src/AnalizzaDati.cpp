@@ -41,7 +41,7 @@ int main(int numParam, char* args[]) {
 	//Ricordarsi che con 0 gradi l'intervallo era di 20!
 	const int NUM_FILE = 7;// 7 file (7 intervalli) per 15, 30, 45 gradi
 	const int NUM_DATIPERFILE = 5;// 5 dati in ogni file
-	const int ANGOLI_NUM = 3;//15, 30, 45. 0 lo faremo a parte perchè ha un intervallo da venti cm
+	const int ANGOLI_NUM = 3;//15, 30, 45 0 e 45 li facciamo a parte
 	try {
 		//stringstream ss;
 //		string nf;//Nome file da aprire
@@ -70,14 +70,8 @@ int main(int numParam, char* args[]) {
 
 
 
-//Prima esperianza, guidovia inclinata
+//Prima esperianza, guidovia inclinata a 15, 30 e 45 gradi senza peso
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Vari casi:
-		 * 	1. nè peso nè alluminio
-		 * 	2. peso
-		 */
-		for (int varicasi = 1; varicasi <= 2; varicasi++)
 		{
 
 		//stringstream ss;
@@ -85,51 +79,35 @@ int main(int numParam, char* args[]) {
 		//FileStream
 		ofstream FileMedie;//FileStream
 		ofstream FileRiassunto;
+		ofstream FileVelocita;
 		using namespace mions::dataAnalisi;
 		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 		vector<double> arrayTempi;
 		arrayRiassunti.reserve(NUM_FILE);
 		string nomeoutputfile;
-		string tipodati;
 		string nomefilemedie;
+		string nomefilevelocita;
+		string nomeoutputvelocita;//Per tenere temporaneamente la variabile ed evitare il self assignment
 
 		/* Vari casi:
 		 * 	1. nè peso nè alluminio
-		 * 	2. peso
 		 */
-		switch (varicasi) {
-			case 1:
+		string tipodati;
 				nomeoutputfile = "./Risultati/normale_dati.txt";
-				tipodati = "d";
+				//tipodati = "d";
 				nomefilemedie = "arrayTempi_PrimaVolta_normale.txt";
-				break;
+				nomefilevelocita = "velocita_PV_normale.txt";//PV = prima volta
 
-			case 2:
-				nomeoutputfile = "./Risultati/peso_dati.txt";
-				tipodati = "cd";
-				nomefilemedie = "arrayTempi_PrimaVolta_peso.txt";
-				break;
-
-			default:
-				throw "Errore: variante non contemplata";
-				break;
-		}
-
-		//string nomeoutputfile = "./Risultati/nopeso_dati.txt";
 		FileRiassunto.open(nomeoutputfile.c_str());
 
 		for (int angoli = 1; angoli <= ANGOLI_NUM; angoli++) {
 
 			for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
-				//Se la slitta è carica fai solo i 45
-				//TODO: Sporco trucco, ma sono disperato
-				if (varicasi == 2)
-					angoli = ANGOLI_NUM;
 
 				stringstream ss;
 				ifstream FileImputDati;//File di imput
 				ss << "./DatiFormattati/DatiStandardizzati/";
-				ss << tipodati;//Tipo dei dati contenuti nel file: d, cd
+				ss << "d";//Tipo dei dati contenuti nel file: d, cd
 				ss << intervallo*10 + 40;
 				ss << "_";
 				ss << angoli*15;
@@ -173,30 +151,44 @@ int main(int numParam, char* args[]) {
 				case 1:
 					//Ricicliamo nomeoutputfile per indicare i file di uscita
 					nomeoutputfile = string("./Risultati/MetaDati/15/") + nomefilemedie;
+					nomeoutputvelocita = string("./Risultati/MetaDati/15/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
+					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;
+						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << 10/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
+					FileVelocita.close();
 					break;
 				case 2:
+					//Ricicliamo nomeoutputfile per indicare i file di uscita
 					nomeoutputfile = string("./Risultati/MetaDati/30/") + nomefilemedie;
+					nomeoutputvelocita = string("./Risultati/MetaDati/30/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
+					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;
+						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << 10/cinque_tempi_media << endl;//10 cm
 					}
 					FileMedie.close();
+					FileVelocita.close();
 					break;
 				case 3:
+					//Ricicliamo nomeoutputfile per indicare i file di uscita
 					nomeoutputfile = string("./Risultati/MetaDati/45/") + nomefilemedie;
+					nomeoutputvelocita = string("./Risultati/MetaDati/45/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
+					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;
+						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << 10/cinque_tempi_media << endl;//10 cm
 					}
 					FileMedie.close();
+					FileVelocita.close();
 					break;
 				default:
 					throw "Errore: numero casi angoli sbagliato";
@@ -207,7 +199,125 @@ int main(int numParam, char* args[]) {
 
 		FileRiassunto.close();
 		arrayRiassunti.clear();
-	}//Blocco nopeso
+	  }//Blocco prima esperienza
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Prima esperianza, guidovia inclinata a 45 con peso
+///////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Vari casi:
+		 * 	1. nè peso nè alluminio
+		 * 	2. peso
+		 */
+//for (int varicasi = 1; varicasi <= 2; varicasi++)
+		{
+
+			//stringstream ss;
+			string nf;		//Nome file da aprire
+			//FileStream
+			ofstream FileMedie;				//FileStream
+			ofstream FileRiassunto;
+			ofstream FileVelocita;
+			using namespace mions::dataAnalisi;
+			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
+			vector<double> arrayTempi;
+			arrayRiassunti.reserve(NUM_FILE);
+			string nomeoutputfile;
+			string nomefilemedie;
+			string nomefilevelocita;
+			string nomeoutputvelocita;
+
+			/* Vari casi:
+			 * 	1. nè peso nè alluminio
+			 * 	2. peso
+			 */
+				string tipodati;
+				nomeoutputfile = "./Risultati/peso_dati.txt";
+				tipodati = "cd";
+				nomefilemedie = "arrayTempi_PrimaVolta_peso.txt";
+				nomefilevelocita = "velocita_PV_peso.txt";
+
+
+			//string nomeoutputfile = "./Risultati/nopeso_dati.txt";
+			FileRiassunto.open(nomeoutputfile.c_str());
+
+				//Se la slitta è carica fai solo i 45
+				//TODO: Sporco trucco, ma sono disperato
+				for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
+
+					stringstream ss;
+					ifstream FileImputDati;					//File di imput
+					ss << "./DatiFormattati/DatiStandardizzati/";
+					ss << tipodati;	//Tipo dei dati contenuti nel file: d, cd
+					ss << intervallo * 10 + 40;
+					ss << "_";
+					ss << "45";
+					ss >> nf;
+					//ss.flush();
+
+					clog << nf << endl;
+					FileImputDati.open(nf.c_str());	//Apro il file indicato nell'argomento dato via shell
+					if (!FileImputDati.is_open())
+						throw "Errore: file non aperto";
+
+					vector<double> tempVect(5);	// Vector che contiene i dati di un file solo, da cui ricavare il tempo medio
+					tempVect.reserve(NUM_DATIPERFILE);
+
+					clog << tempVect.size() << endl;
+					for (unsigned int i = 0; i < tempVect.size(); i++) {
+						FileImputDati >> tempVect[i];
+						clog << "Pos " << i << ": " << tempVect[i] << endl;
+					}
+					clog << "Dati letti. Analizzo..." << endl << endl;
+
+					arrayRiassunti.emplace_back(tempVect, true);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore (cioè, manda gli argomenti VarStat dentro al vettore)
+
+					cout << endl;
+					cout << "Nome file: " << nf << endl;
+					cout << arrayRiassunti.back();
+
+					FileRiassunto << endl;
+					FileRiassunto << "Nome file: " << nf << endl;
+					FileRiassunto << arrayRiassunti.back() << endl;
+
+					arrayTempi.push_back(arrayRiassunti.back().getMedia());
+
+					ss.clear();
+					FileImputDati.close();
+				}					//Intervalli
+
+				//Ex switch
+					//Ricicliamo nomeoutputfile per indicare i file di uscita
+					nomeoutputfile = string("./Risultati/MetaDati/45/")
+							+ nomefilemedie;
+					nomeoutputvelocita = string("./Risultati/MetaDati/45/")
+							+ nomefilevelocita;
+					FileMedie.open(nomeoutputfile.c_str());
+					FileVelocita.open(nomeoutputvelocita.c_str());
+					for (auto& cinque_tempi_media : arrayTempi) {
+						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << 10 / cinque_tempi_media << endl;//10 cm
+					}
+					FileMedie.close();
+					FileVelocita.close();
+
+				arrayTempi.clear();
+
+			FileRiassunto.close();
+			arrayRiassunti.clear();
+		}					//Blocco prima esperienza 45 con peso
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -232,51 +342,104 @@ int main(int numParam, char* args[]) {
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//		//Apri i dati CON peso
-//		{
-//		//stringstream ss;
-//		string nf;//Nome file da aprire
-//		//FileStream
-//		ofstream FileMedie;//FileStream
-//		ofstream FileRiassunto;
-//		using namespace mions::dataAnalisi;
-//		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-//		vector<double> arrayTempi;
-//		arrayRiassunti.reserve(NUM_FILE);
+
+
+
+
+
+
+
+
+
+
+
+//Seconda, guidovia a zero e alluminio
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//		/*
+//		 * Vari casi:
+//		 * 	1. nè peso nè alluminio
+//		 * 	2. peso
+//		 * 	3. peso e alluminio
+//		 */
+//		for (int varicasi = 1; varicasi <= 2; varicasi++) {
 //
-//		string nomeoutputfile = "./Risultati/conpeso_dati.txt";
-//		FileRiassunto.open(nomeoutputfile.c_str());
+//			//stringstream ss;
+//			string nf;				//Nome file da aprire
+//			//FileStream
+//			ofstream FileMedie;		//FileStream
+//			ofstream FileRiassunto;
+//			ofstream FileVelocita;
+//			using namespace mions::dataAnalisi;
+//			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
+//			vector<double> arrayTempi;
+//			arrayRiassunti.reserve(NUM_FILE);
+//			string nomeoutputfile;
+//			string tipodati;
+//			string nomefilemedie;
+//			string nomefilevelocita;
 //
-//		for (int angoli = 1; angoli <= ANGOLI_NUM; angoli++) {
+//			/* Vari casi:
+//			 * 	1. nè peso nè alluminio
+//			 * 	2. peso
+//			 * 	3. peso e alluminio
+//			 */
+//			switch (varicasi) {
+//			case 1:
+//				nomeoutputfile = "./Risultati/normale_dati.txt";
+//				tipodati = "d";
+//				nomefilemedie = "arrayTempi_PrimaVolta_normale.txt";
+//				break;
+//
+//			case 2:
+//				nomeoutputfile = "./Risultati/peso_dati.txt";
+//				tipodati = "cd";
+//				nomefilemedie = "arrayTempi_PrimaVolta_peso.txt";
+//				break;
+//
+//			case 3:
+//				nomeoutputfile = "./Risultati/peso_alluminio_dati.txt";
+//				tipodati = "cd";
+//				nomefilemedie = "arrayTempi_PrimaVolta_peso_alluminio.txt";
+//				break;
+//
+//			default:
+//				throw "Errore: variante non contemplata";
+//				break;
+//			}
+//
+//			//string nomeoutputfile = "./Risultati/nopeso_dati.txt";
+//			FileRiassunto.open(nomeoutputfile.c_str());
+//
+//			//for (int angoli = 1; angoli <= ANGOLI_NUM; angoli++) {
 //
 //			for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
+//
 //				stringstream ss;
-//				ifstream FileImputDati;//File di imput
+//				ifstream FileImputDati;		//File di imput
 //				ss << "./DatiFormattati/DatiStandardizzati/";
-//				ss << "cd";
-//				ss << intervallo*10 + 40;
+//				ss << tipodati;		//Tipo dei dati contenuti nel file: d, cd
+//				ss << intervallo * 10 + 40;
 //				ss << "_";
-//				ss << angoli*15;
+//				ss << 0;		// Solo zero l'ultima esperienza
 //				ss >> nf;
 //				//ss.flush();
 //
 //				clog << nf << endl;
-//				FileImputDati.open(nf.c_str());//Apro il file indicato nell'argomento dato via shell
+//				FileImputDati.open(nf.c_str());	//Apro il file indicato nell'argomento dato via shell
 //				if (!FileImputDati.is_open())
 //					throw "Errore: file non aperto";
 //
-//				vector<double> tempVect(5);// Vector che contiene i dati di un file solo, da cui ricavare il tempo medio
+//				vector<double> tempVect(5);	// Vector che contiene i dati di un file solo, da cui ricavare il tempo medio
 //				tempVect.reserve(NUM_DATIPERFILE);
 //
 //				clog << tempVect.size() << endl;
-//				for (unsigned int i = 0; i < tempVect.size(); i++){
+//				for (unsigned int i = 0; i < tempVect.size(); i++) {
 //					FileImputDati >> tempVect[i];
 //					clog << "Pos " << i << ": " << tempVect[i] << endl;
 //				}
 //				clog << "Dati letti. Analizzo..." << endl << endl;
 //
-//				arrayRiassunti.emplace_back(tempVect,true);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore (cioè, manda gli argomenti VarStat dentro al vettore)
+//				arrayRiassunti.emplace_back(tempVect, true);// Forwarda gli argomenti a un oggetto costruito DIRETTAMENTE nel vettore (cioè, manda gli argomenti VarStat dentro al vettore)
 //
 //				cout << endl;
 //				cout << "Nome file: " << nf << endl;
@@ -290,46 +453,28 @@ int main(int numParam, char* args[]) {
 //
 //				ss.clear();
 //				FileImputDati.close();
-//			}//Intervalli
+//			}		//Intervalli
+//
+//			//Ricicliamo nomeoutputfile per indicare i file di uscita
+//			nomeoutputfile = string("./Risultati/MetaDati/0/") + nomefilemedie;
+//			FileMedie.open(nomeoutputfile.c_str());
+//			for (auto& cinque_tempi_media : arrayTempi) {
+//				FileMedie << cinque_tempi_media << endl;
+//			}
+//			FileMedie.close();
+//			break;
+//
+//			arrayTempi.clear();
+//			//}//Angoli
 //
 //			FileRiassunto.close();
-//
-//			switch (angoli) {
-//				case 1:
-//					nomeoutputfile = "./Risultati/MetaDati/15/arrayTempi_PrimaVolta_conpeso.txt";
-//					FileMedie.open(nomeoutputfile.c_str());
-//					for (auto& cinque_tempi_media : arrayTempi)
-//					{
-//						FileMedie << cinque_tempi_media << endl;
-//					}
-//					FileMedie.close();
-//					break;
-//				case 2:
-//					nomeoutputfile = "./Risultati/MetaDati/30/arrayTempi_PrimaVolta_conpeso.txt";
-//					FileMedie.open(nomeoutputfile.c_str());
-//					for (auto& cinque_tempi_media : arrayTempi)
-//					{
-//						FileMedie << cinque_tempi_media << endl;
-//					}
-//					FileMedie.close();
-//					break;
-//				case 3:
-//					nomeoutputfile = "./Risultati/MetaDati/45/arrayTempi_PrimaVolta_conpeso.txt";
-//					FileMedie.open(nomeoutputfile.c_str());
-//					for (auto& cinque_tempi_media : arrayTempi)
-//					{
-//						FileMedie << cinque_tempi_media << endl;
-//					}
-//					FileMedie.close();
-//					break;
-//				default:
-//					throw "Errore: numero casi angoli sbagliato";
-//					break;
-//			}//switch
-//			arrayTempi.clear();
-//		}//Angoli
-//	}//Blocco nopeso
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+//			arrayRiassunti.clear();
+//		}		//Blocco seconda esperienza
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 
