@@ -14,9 +14,8 @@
 #include <fstream>//FileStream
 #include <exception>//Eccezioni
 #include <string>
-#include <cstdlib>
+#include <cstdlib>//system(clear)
 #include <algorithm>//Sort?
-#include <string>
 #include <sstream>//StringStream
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +123,7 @@ int main(int numParam, char* args[]) {
 				tempVect.reserve(NUM_DATIPERFILE);
 
 				clog << tempVect.size() << endl;
-				for (unsigned int i = 0; i < tempVect.size(); i++){
+				for (unsigned int i = 0; i < tempVect.size(); i++) {
 					FileImputDati >> tempVect[i];
 					clog << "Pos " << i << ": " << tempVect[i] << endl;
 				}
@@ -199,11 +198,8 @@ int main(int numParam, char* args[]) {
 
 		FileRiassunto.close();
 		arrayRiassunti.clear();
-	  }//Blocco prima esperienza
+	  }//Blocco prima esperienza senza peso
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 
@@ -224,11 +220,9 @@ int main(int numParam, char* args[]) {
 //for (int varicasi = 1; varicasi <= 2; varicasi++)
 		{
 
-			//stringstream ss;
-			string nf;		//Nome file da aprire
-			//FileStream
-			ofstream FileMedie;				//FileStream
-			ofstream FileRiassunto;
+			string nf;						// Nome file
+			ofstream FileMedie;				// File con le medie dei tempi
+			ofstream FileRiassunto;			// File con le informazioni sulle cinquine di dati
 			ofstream FileVelocita;
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
@@ -239,10 +233,7 @@ int main(int numParam, char* args[]) {
 			string nomefilevelocita;
 			string nomeoutputvelocita;
 
-			/* Vari casi:
-			 * 	1. nè peso nè alluminio
-			 * 	2. peso
-			 */
+
 				string tipodati;
 				nomeoutputfile = "./Risultati/peso_dati.txt";
 				tipodati = "cd";
@@ -319,11 +310,62 @@ int main(int numParam, char* args[]) {
 			arrayRiassunti.clear();
 		}					//Blocco prima esperienza 45 con peso
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Seconda esperienza, 0 gradi con alluminio e peso
+		for (int varicasi = 1; varicasi <= 3; varicasi++)
+		{
+			string nf;						//Nome file da aprire
+			ofstream FileMedie;				//File per le medie
+			ofstream FileRiassunto;
+			ofstream FileVelocita;
+			using namespace mions::dataAnalisi;
+			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
+			vector<double> arrayTempi;
+			arrayRiassunti.reserve(NUM_FILE);
+			string nomeoutputfile;
+			string nomefilemedie;
+			string nomefilevelocita;
+			string nomeoutputvelocita;
+
+			/* Vari casi:
+			 * 	1. nè peso nè alluminio (file "d...")
+			 * 	2. peso (file "cd...")
+			 * 	3. peso e alluminio ("cad...")
+			 */
+			string tipodati;
+			switch (varicasi) {
+				case 1: // normale
+					nomeoutputfile = "./Risultati/normale_dati.txt";
+					tipodati = "d";
+					nomefilemedie = "arrayTempi_PrimaVolta_peso.txt";
+					nomefilevelocita = "velocita_PV_peso.txt";
+					break;
+				default:
+					break;
+			}
+
+		}
 
 
 
