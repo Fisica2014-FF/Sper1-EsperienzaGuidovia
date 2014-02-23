@@ -1,0 +1,72 @@
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad60_0
+Numero dati:                       5
+Media:                             2.6616
+Varianza del campione:             8.544e-05
+Deviazione standard campione:      0.00924338
+Varianza della popolazione:        0.0001068
+Deviazione standard popolazione:   0.0103344
+Errore della media:                0.00462169
+Massimo:                           2.678
+Minimo:                            2.652
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad70_0
+Numero dati:                       5
+Media:                             2.8102
+Varianza del campione:             0.00046016
+Deviazione standard campione:      0.0214513
+Varianza della popolazione:        0.0005752
+Deviazione standard popolazione:   0.0239833
+Errore della media:                0.0107257
+Massimo:                           2.844
+Minimo:                            2.777
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad80_0
+Numero dati:                       5
+Media:                             2.993
+Varianza del campione:             0.0011368
+Deviazione standard campione:      0.0337165
+Varianza della popolazione:        0.001421
+Deviazione standard popolazione:   0.0376962
+Errore della media:                0.0168582
+Massimo:                           3.036
+Minimo:                            2.953
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad90_0
+Numero dati:                       5
+Media:                             3.1626
+Varianza del campione:             0.00347104
+Deviazione standard campione:      0.0589155
+Varianza della popolazione:        0.0043388
+Deviazione standard popolazione:   0.0658696
+Errore della media:                0.0294578
+Massimo:                           3.248
+Minimo:                            3.067
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad100_0
+Numero dati:                       5
+Media:                             3.32
+Varianza del campione:             0.0042604
+Deviazione standard campione:      0.0652717
+Varianza della popolazione:        0.0053255
+Deviazione standard popolazione:   0.072976
+Errore della media:                0.0326359
+Massimo:                           3.41
+Minimo:                            3.244
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/cad110_0
+Numero dati:                       5
+Media:                             3.6968
+Varianza del campione:             0.0208886
+Deviazione standard campione:      0.144529
+Varianza della popolazione:        0.0261107
+Deviazione standard popolazione:   0.161588
+Errore della media:                0.0722644
+Massimo:                           3.845
+Minimo:                            3.425
+

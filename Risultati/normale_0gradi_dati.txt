@@ -1,0 +1,72 @@
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d60_0
+Numero dati:                       5
+Media:                             1.1596
+Varianza del campione:             2.464e-05
+Deviazione standard campione:      0.00496387
+Varianza della popolazione:        3.08e-05
+Deviazione standard popolazione:   0.00554977
+Errore della media:                0.00248193
+Massimo:                           1.168
+Minimo:                            1.154
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d70_0
+Numero dati:                       5
+Media:                             1.1754
+Varianza del campione:             8.144e-05
+Deviazione standard campione:      0.00902441
+Varianza della popolazione:        0.0001018
+Deviazione standard popolazione:   0.0100896
+Errore della media:                0.00451221
+Massimo:                           1.186
+Minimo:                            1.16
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d80_0
+Numero dati:                       5
+Media:                             1.1846
+Varianza del campione:             1.944e-05
+Deviazione standard campione:      0.00440908
+Varianza della popolazione:        2.43e-05
+Deviazione standard popolazione:   0.0049295
+Errore della media:                0.00220454
+Massimo:                           1.188
+Minimo:                            1.176
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d90_0
+Numero dati:                       5
+Media:                             1.1932
+Varianza del campione:             2.336e-05
+Deviazione standard campione:      0.00483322
+Varianza della popolazione:        2.92e-05
+Deviazione standard popolazione:   0.0054037
+Errore della media:                0.00241661
+Massimo:                           1.2
+Minimo:                            1.186
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d100_0
+Numero dati:                       5
+Media:                             1.1974
+Varianza del campione:             8.304e-05
+Deviazione standard campione:      0.00911263
+Varianza della popolazione:        0.0001038
+Deviazione standard popolazione:   0.0101882
+Errore della media:                0.00455631
+Massimo:                           1.208
+Minimo:                            1.184
+
+
+Nome file: ./DatiFormattati/DatiStandardizzati/d110_0
+Numero dati:                       5
+Media:                             1.1712
+Varianza del campione:             5.216e-05
+Deviazione standard campione:      0.00722219
+Varianza della popolazione:        6.52e-05
+Deviazione standard popolazione:   0.00807465
+Errore della media:                0.00361109
+Massimo:                           1.182
+Minimo:                            1.16
+
