@@ -1,0 +1,22 @@
+#Analizza i dati
+set fit logfile '../Risultati/Analisi_Dati/ris_15gradi_normale'
+
+f(x)=a+b*x
+
+fit f(x) '< paste ../Risultati/MetaDati/15/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/15/velocita_PV_normale.txt' using 1:2 via a,b
+
+
+
+#Fai il grafico
+set xlabel "Tempo (s)"
+set ylabel "Velocita (m/s)"
+unset key
+
+set terminal svg
+set output "./immagini/velocita_15gradi_normale.svg"
+
+plot '< paste ../Risultati/MetaDati/15/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/15/velocita_PV_normale.txt' with yerrorbars, \
+f(x)
+
+
+unset output

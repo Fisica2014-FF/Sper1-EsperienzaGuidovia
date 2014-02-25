@@ -1,0 +1,1 @@
+./Gnuplot/*.gnuplotscript | gnuplot -p

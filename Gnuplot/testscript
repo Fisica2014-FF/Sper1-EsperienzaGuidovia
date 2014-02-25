@@ -1,7 +1,7 @@
 #Vai nella cartella del progetto
 cd ../
 
-set fit logfile __NOMELOGFILE__
+set fit logfile ../Risultati/Analisi_Dati/ris_
 
 f(x)=a+b*x
 
