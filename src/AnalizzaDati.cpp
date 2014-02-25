@@ -23,7 +23,7 @@
 #include "mylib/AnalisiDati/VarStat.h"//Le mie classi Template per l'analisi dati
 #include "mylib/AnalisiDati/SortingVarStat.h"//Le mie classi Template per l'analisi dati
 
-#define VERSIONE 0.5
+#define VERSIONE 1.0
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Prototipi
@@ -42,33 +42,31 @@ int main(int numParam, char* args[]) {
 	const int NUM_FILE_0GRADI = 6; //  file per 60,70,80,90,100,110
 	const int NUM_DATIPERFILE = 5;// 5 dati in ogni file
 	const int ANGOLI_NUM = 3;//15, 30, 45 0 e 45 li facciamo a parte
+	//const auto INTERVALLO = VarStat<double>(0.1, 0.001 / sqrt(6));//Distribuzione triangolare
 
 	try {
 		//stringstream ss;
-//		string nf;//Nome file da aprire
-//		//FileStream
-//		ofstream FileMedie;//FileStream
-//		ofstream FileRiassunto;
-//		using namespace mions::dataAnalisi;
-//		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-//		vector<double> arrayTempi;
-//		arrayRiassunti.reserve(NUM_FILE);
+		string nf;//Nome file da aprire
+		//FileStream
+		ofstream FileMedie;//FileStream
+		ofstream FileRiassunto;
+		using namespace mions::dataAnalisi;
+		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
+		vector<VarStat<double> > arrayTempi;
+		arrayRiassunti.reserve(NUM_FILE);
+		const auto INTERVALLO = VarStat<double>(0.1, 0.001 / sqrt(6));//Distribuzione triangolare
 
-		//Test
 //		vector<double> v1 = {1,1,1,100000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,2,1,3,2};
-
-//		vector<double> v2 = {2,3,1,-1};
+//
+//		vector<double> v2 = {2,3,1,1};
 //		vector<double> v3 = {4,5,6,10};
 //		VarStat<double> AnDat(v2,true);
-//		Sorting_VarStat<double> var2(std::move(v3),true);//Non usare più v1
-//
+//		Sorting_VarStat<double> var2(std::move(v3));//Non usare più v1
 //		cout << "MEDIANA " <<var2.getMediana() << "\n";
-//		AnDat = -1*((-1)*AnDat+var2);
-//
+//		AnDat = (AnDat-var2)/(AnDat*3*var2);
 //		cout << AnDat << endl;
 //
 //		return 0;
-
 
 
 //Prima esperianza, guidovia inclinata a 15, 30 e 45 gradi senza peso
@@ -83,7 +81,7 @@ int main(int numParam, char* args[]) {
 		ofstream FileVelocita;
 		using namespace mions::dataAnalisi;
 		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-		vector<double> arrayTempi;
+		vector<VarStat<double> > arrayTempi;
 		arrayRiassunti.reserve(NUM_FILE);
 		string nomeoutputfile;
 		string nomefilemedie;
@@ -141,7 +139,7 @@ int main(int numParam, char* args[]) {
 				FileRiassunto << "Nome file: " << nf << endl;
 				FileRiassunto << arrayRiassunti.back() << endl;
 
-				arrayTempi.push_back(arrayRiassunti.back().getMedia());
+				arrayTempi.emplace_back(arrayRiassunti.back());
 
 				ss.clear();
 				FileImputDati.close();
@@ -155,10 +153,12 @@ int main(int numParam, char* args[]) {
 					nomeoutputvelocita = string("./Risultati/MetaDati/15/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
+					//const auto intervallo = VarStat<double>(0.1, 0.1 / sqrt(6));
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << 10/cinque_tempi_media << endl;//10 cm di intervallo
+						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
+								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -171,8 +171,10 @@ int main(int numParam, char* args[]) {
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << 10/cinque_tempi_media << endl;//10 cm
+						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
+								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
+
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -185,8 +187,9 @@ int main(int numParam, char* args[]) {
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi)
 					{
-						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << 10/cinque_tempi_media << endl;//10 cm
+						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
+								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -228,7 +231,7 @@ int main(int numParam, char* args[]) {
 			ofstream FileVelocita;
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-			vector<double> arrayTempi;
+			vector<VarStat<double> > arrayTempi;
 			arrayRiassunti.reserve(NUM_FILE);
 			string nomeoutputfile;
 			string nomefilemedie;
@@ -285,7 +288,7 @@ int main(int numParam, char* args[]) {
 					FileRiassunto << "Nome file: " << nf << endl;
 					FileRiassunto << arrayRiassunti.back() << endl;
 
-					arrayTempi.push_back(arrayRiassunti.back().getMedia());
+					arrayTempi.emplace_back(arrayRiassunti.back());
 
 					ss.clear();
 					FileImputDati.close();
@@ -300,8 +303,9 @@ int main(int numParam, char* args[]) {
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (auto& cinque_tempi_media : arrayTempi) {
-						FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << 10 / cinque_tempi_media << endl;//10 cm
+						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
+								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -351,7 +355,7 @@ int main(int numParam, char* args[]) {
 			ofstream FileVelocita;
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-			vector<double> arrayTempi;
+			vector<VarStat<double> > arrayTempi;
 			arrayRiassunti.reserve(NUM_FILE);
 			string nomeoutputfile;
 			string nomefilemedie;
@@ -433,7 +437,7 @@ int main(int numParam, char* args[]) {
 				FileRiassunto << "Nome file: " << nf << endl;
 				FileRiassunto << arrayRiassunti.back() << endl;
 
-				arrayTempi.push_back(arrayRiassunti.back().getMedia());
+				arrayTempi.emplace_back(arrayRiassunti.back());
 
 				ss.clear();
 				FileImputDati.close();
@@ -448,8 +452,9 @@ int main(int numParam, char* args[]) {
 				FileMedie.open(nomeoutputfile.c_str());
 				FileVelocita.open(nomeoutputvelocita.c_str());
 				for (auto& cinque_tempi_media : arrayTempi) {
-					FileMedie << cinque_tempi_media << endl;//sette medie di cinque tempi ciascuns
-					FileVelocita << 10 / cinque_tempi_media << endl;//10 cm
+					FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
+					FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
+							<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 				}
 				FileMedie.close();
 				FileVelocita.close();

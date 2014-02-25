@@ -79,10 +79,11 @@ inline const VarStat<U> operator*(const double& lhs, const VarStat<U> rhs) {
 	return (rhs*lhs);
 }
 
+//Moltiplicazione a sinistra per uno scalare
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Classe per l'analisi di UNA variabile statistica offline, cioè avendo accesso a tutti i dati fin dall'inizio
 // O anche, che "rappresenta" una variabile statistica
-// TODO: Dovrebbe essere con la lazy evalutation
 template <class T>
 class VarStat {
 public:
@@ -91,6 +92,31 @@ public:
 	friend std::ostream& operator<<<T>(std::ostream& , const VarStat<T>& );
 	friend const VarStat<T> operator*<T>(const VarStat<T> , const double& );
 	friend const VarStat<T> operator*<T>(const double& , const VarStat<T> );
+
+	//
+	VarStat(T valore) {
+		iNumero_dati = 1;
+		dMedia = (double)valore;
+		dDeviazioneStandardCamp = 0;
+		dDeviazioneStandardPop = 0;
+		dVarianzaCampione = 0;
+		dVarianzaPopolazione = 0;
+		dMax = (double)valore;
+		dMin = (double)valore;
+		dErroreMedia = 0;
+	}
+
+	VarStat(T valore, double DevStdPop, int numDati = 100000) {
+		iNumero_dati = numDati;
+		dMedia = (double)valore;
+		dDeviazioneStandardPop = DevStdPop;
+		dDeviazioneStandardCamp = DevStdPop * (numDati-1)/numDati;
+		dVarianzaCampione = dDeviazioneStandardCamp*dDeviazioneStandardCamp;
+		dVarianzaPopolazione = DevStdPop*DevStdPop;
+		dMax = (double)valore + DevStdPop;
+		dMin = (double)valore - DevStdPop;
+		dErroreMedia = 0;
+	}
 
 	//Costruttore
 	VarStat(const vector<T>& aDati, bool eliminaTreSigma = true) {
@@ -161,7 +187,6 @@ public:
 					pDato != aDati.end();
 					pDato++, i++)// i indica l'offset dall'inizio del vector, lo useremo dopo per verificare i dati
 			{
-				//TODO: Finire
 				//i++;//Per mettere gli offset degli iterator, probabilmente si può mettere nel ciclo direttamente a questo punto
 				if (abs(dMedia - (*pDato) ) >= 3*dDeviazioneStandardCamp) {
 					/* Cancelliamo dal Vector i dati inaccettabili. Operazione costosa perchè i dati successivi vengono traslati
@@ -265,8 +290,8 @@ public:
 		//Obiettivo: dare gli stessi risultati come se avessi sommato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sommando i singoli elementi fra loro
 		dMedia = rhs.getMedia() + getMedia();//Somma le medie delle due variabili
-		dVarianzaCampione = pow(rhs.getVarianzaCampione(),2) + pow(getVarianzaCampione(),2);//Propagazione dell'errore
-		dVarianzaPopolazione = pow(rhs.getVarianzaPopolazione(),2) + pow(getVarianzaPopolazione(),2);
+		dVarianzaCampione = rhs.getVarianzaCampione() + getVarianzaCampione();//Propagazione dell'errore
+		dVarianzaPopolazione = rhs.getVarianzaPopolazione() + getVarianzaPopolazione();
 
 		//La nuova varianza permette di calcolare direttamente la nuova std
 		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
@@ -274,7 +299,7 @@ public:
 
 		// Il massimo della somma è la somma dei due massimi
 		// Worst-case max? Non ben definito, ma se ho due set di dati, il massimo (tra tutte le possibilità) è la somma dei due massimi precedenti
-		dMax = rhs.getMax() +getMax();
+		dMax = rhs.getMax() + getMax();
 
 		//Idem per il minimo, il minimo "minore" è la somma dei minimi
 		dMin = rhs.getMin() + getMin();
@@ -290,8 +315,8 @@ public:
 		//Obiettivo: dare gli stessi risultati come se avessi sottratto i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sottraendo i singoli elementi fra loro
 		dMedia = getMedia() - rhs.getMedia();//Sottrai le medie delle due variabili
-		dVarianzaCampione = pow(rhs.getVarianzaCampione(),2) + pow(getVarianzaCampione(),2);//Propagazione dell'errore
-		dVarianzaPopolazione = pow(rhs.getVarianzaPopolazione(),2) + pow(getVarianzaPopolazione(),2);
+		dVarianzaCampione = rhs.getVarianzaCampione() + getVarianzaCampione();//Propagazione dell'errore
+		dVarianzaPopolazione = rhs.getVarianzaPopolazione() + getVarianzaPopolazione();
 
 		//La nuova varianza permette di calcolare direttamente la nuova std
 		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
@@ -304,9 +329,67 @@ public:
 		//Il minimo "minore" è il minimo del minuendo a cui abbiamo tolto il più possibile, cioè il massimo del sottraendo
 		dMin = getMin() - rhs.getMax();
 
-		dErroreMedia = sqrt(pow(rhs.getErroreMedia(),2) + pow(getErroreMedia(),2));;
+		dErroreMedia = sqrt(pow(rhs.getErroreMedia(),2) + pow(getErroreMedia(),2));
 		return *this;	//Idiozia ma dicono che serva
 	}
+
+	//Operatori
+	//moltiplica una variabile statistica a un'altra e memorizzala nella prima. Vedi commento su -=, sotto
+	inline VarStat<T>& operator*=(const VarStat<T>& rhs) {
+		//Obiettivo: dare gli stessi risultati come se avessi moltiplicato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
+		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma moltiplicando i singoli elementi fra loro
+		double tMedia = getMedia();//Salvo la media
+		dMedia = rhs.getMedia() * getMedia();//MOltiplica le medie delle due variabili
+		dVarianzaCampione = getMedia()*getMedia()*(rhs.getVarianzaCampione() / (tMedia*tMedia) + getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
+		dVarianzaPopolazione = getMedia()*getMedia()*(rhs.getVarianzaPopolazione() / (tMedia*tMedia) + getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
+
+		//La nuova varianza permette di calcolare direttamente la nuova std
+		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
+		dDeviazioneStandardPop = sqrt(getVarianzaPopolazione());
+
+		// Il massimo della somma è la somma dei due massimi
+		// Worst-case max? Non ben definito, ma se ho due set di dati, il massimo (tra tutte le possibilità) è la somma dei due massimi precedenti
+		// TODO: Casi non maggiori di zero
+		// TODO: Casi non maggiori di zero
+		dMax = (getMedia() > 0) ? (getMax() * rhs.getMax()) : ( INFINITY );
+
+		//Idem per il minimo, il minimo "minore" è la somma dei minimi
+		dMin = (getMedia() > 0) ? (getMin() * rhs.getMin()) : ( -INFINITY );
+
+		dErroreMedia = abs(getMedia())*sqrt(pow(rhs.getErroreMedia() / rhs.getMedia(),2) + pow(getErroreMedia() / tMedia,2) );//Propagato come una StDev normale
+		return *this;	//Idiozia ma dicono che serva
+	}
+
+	inline VarStat<T>& operator/=(const VarStat<T>& rhs) {
+		//Obiettivo: dare gli stessi risultati come se avessi moltiplicato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
+		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma moltiplicando i singoli elementi fra loro
+		double tMedia = getMedia();//Salvo la media
+		dMedia = getMedia() / rhs.getMedia();//MOltiplica le medie delle due variabili
+		dVarianzaCampione = getMedia() * getMedia()*(rhs.getVarianzaCampione() / (tMedia*tMedia) + getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
+		dVarianzaPopolazione = getMedia() * getMedia()*(rhs.getVarianzaPopolazione() / (tMedia*tMedia) + getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
+
+		//La nuova varianza permette di calcolare direttamente la nuova std
+		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
+		dDeviazioneStandardPop = sqrt(getVarianzaPopolazione());
+
+		// Il massimo della somma è la somma dei due massimi
+		// Worst-case max? Non ben definito, ma se ho due set di dati, il massimo (tra tutte le possibilità) è la somma dei due massimi precedenti
+		// TODO: Casi non maggiori di zero
+		dMax = (getMedia() > 0) ? (getMax() / rhs.getMin()) : ( INFINITY );
+
+		//Idem per il minimo, il minimo "minore" è la somma dei minimi
+		dMin = (getMedia() > 0) ? (getMin() / rhs.getMax()) : ( -INFINITY );
+
+		dErroreMedia = abs(getMedia())*sqrt(pow(rhs.getErroreMedia() / rhs.getMedia(),2) + pow(getErroreMedia() / tMedia,2) );//Propagato come una StDev normale
+		return *this;	//Idiozia ma dicono che serva
+	}
+
+
+
+
+
+
+
 
 	//Moltiplicazione per scalare, compound assignment. v *= d è come v.operator*=(d), quindi le funzioni get, etc qui dentro si riferiscono a v
 	inline VarStat<T>& operator*=(const double& rhs) {
@@ -342,6 +425,19 @@ public:
 		result -= other;            // Aggiungici dentro l'altro
 		return result;              // Ritorna il risultato
 	}
+
+	const VarStat<T> operator*(const VarStat<T>& other) const {
+		VarStat<T> result = *this; // Copia il primo oggettp
+		result *= other;            // Aggiungici dentro l'altro
+		return result;              // Ritorna il risultato
+	}
+
+	const VarStat<T> operator/(const VarStat<T>& other) const {
+		VarStat<T> result = *this; // Copia il primo oggettp
+		result /= other;            // Aggiungici dentro l'altro
+		return result;              // Ritorna il risultato
+	}
+
 
 	//Moltiplicazione per uno scalare
 	//Trucchetto per riutilizzare il lavoro svolto con *= double,

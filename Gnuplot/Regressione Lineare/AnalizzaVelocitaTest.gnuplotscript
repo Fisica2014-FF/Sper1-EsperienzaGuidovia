@@ -1,0 +1,5 @@
+cd ../../Risultati/
+
+set fit logfile __NOMELOGFILE__
+
+fit f(x) '< paste __NOMEFILETEMPO__ __NOMEFILEVELOCITA__' using($1):($2/100) via a, b
