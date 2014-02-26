@@ -87,8 +87,6 @@ int main(int numParam, char* args[]) {
 		using namespace mions::dataAnalisi;
 		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 		vector<VarStat<double> > arrayTempi;
-		//TODO aggiunto zero all'inizio
-		arrayTempi.emplace_back(0.0);
 
 		arrayRiassunti.reserve(NUM_FILE);
 		string nomeoutputfile;
@@ -108,6 +106,8 @@ int main(int numParam, char* args[]) {
 		FileRiassunto.open(nomeoutputfile.c_str());
 
 		for (int angoli = 1; angoli <= ANGOLI_NUM; angoli++) {
+			//TODO aggiunto zero all'inizio
+			arrayTempi.emplace_back(0.0);
 
 			for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
 
@@ -164,7 +164,7 @@ int main(int numParam, char* args[]) {
 					//const auto intervallo = VarStat<double>(0.1, 0.1 / sqrt(6));
 					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileMedie << ((arrayTempi[i+1]+arrayTempi[i])/2).getMedia() << endl;//sette medie di cinque tempi ciascuns
 						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
 								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
@@ -179,7 +179,7 @@ int main(int numParam, char* args[]) {
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileMedie << ( (arrayTempi[i+1] + arrayTempi[i]) / 2 ).getMedia() << endl;//sette medie di cinque tempi ciascuns
 						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
 								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
@@ -194,7 +194,7 @@ int main(int numParam, char* args[]) {
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileMedie << ((arrayTempi[i+1]+arrayTempi[i])/2).getMedia() << endl;//sette medie di cinque tempi ciascuns
 						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
 								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
@@ -311,7 +311,7 @@ int main(int numParam, char* args[]) {
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileMedie << ((arrayTempi[i+1]+arrayTempi[i])/2).getMedia() << endl;//sette medie di cinque tempi ciascuns
 						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
 								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
@@ -463,7 +463,7 @@ int main(int numParam, char* args[]) {
 				FileVelocita.open(nomeoutputvelocita.c_str());
 				for (int i = 0; i < NUM_FILE_0GRADI; i++)
 				{
-					FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+					FileMedie << ((arrayTempi[i+1]+arrayTempi[i])/2).getMedia() << endl;//sette medie di cinque tempi ciascuns
 					FileVelocita << (INTERVALLO_SV / arrayTempi[i]).getMedia() << " "
 							<< (INTERVALLO_SV / arrayTempi[i]).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 				}
