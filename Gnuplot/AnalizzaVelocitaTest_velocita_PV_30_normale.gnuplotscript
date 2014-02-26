@@ -13,8 +13,8 @@ set xlabel "Tempo (s)"
 set ylabel "Velocita (m/s)"
 unset key
 
-set terminal svg
-set output "./immagini/velocita_30gradi_normale.svg"
+set terminal png
+set output "./immagini/velocita_30gradi_normale.png"
 
 plot '< paste ../Risultati/MetaDati/30/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/30/velocita_PV_normale.txt' with yerrorbars, \
 f(x)

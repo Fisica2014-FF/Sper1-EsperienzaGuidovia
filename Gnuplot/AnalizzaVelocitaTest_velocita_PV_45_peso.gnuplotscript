@@ -14,8 +14,8 @@ set xlabel "Tempo (s)"
 set ylabel "Velocita (m/s)"
 unset key
 
-set terminal svg
-set output "./immagini/velocita_45gradi_peso.svg"
+set terminal png
+set output "./immagini/velocita_45gradi_peso.png"
 
 plot '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' with yerrorbars, \
 f(x)

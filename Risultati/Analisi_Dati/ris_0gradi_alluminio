@@ -652,3 +652,141 @@ correlation matrix of the fit parameters:
                a      b      
 a               1.000 
 b              -1.000  1.000 
+
+
+*******************************************************************************
+Tue Feb 25 23:43:35 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/0/arrayTempi_0gradi_alluminio.txt ../Risultati/MetaDati/0/velocita_0gradi_alluminio.txt' using 1:2
+        format = x:z
+        #datapoints = 6
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 41.9472           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 1.39644
+
+initial set of free parameter values
+
+a               = 1
+b               = 1
+
+After 6 iterations the fit converged.
+final sum of squares of residuals : 2.08129e-09
+rel. change during last iteration : -5.5641e-14
+
+degrees of freedom    (FIT_NDF)                        : 4
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 2.28106e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.20323e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.117927         +/- 0.0004535    (0.3846%)
+b               = -0.0347518       +/- 0.0002663    (0.7663%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -1.000  1.000 
+
+
+*******************************************************************************
+Tue Feb 25 23:45:00 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/0/arrayTempi_0gradi_alluminio.txt ../Risultati/MetaDati/0/velocita_0gradi_alluminio.txt' using 1:2
+        format = x:z
+        #datapoints = 6
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 41.9472           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 1.39644
+
+initial set of free parameter values
+
+a               = 1
+b               = 1
+
+After 6 iterations the fit converged.
+final sum of squares of residuals : 2.08129e-09
+rel. change during last iteration : -5.5641e-14
+
+degrees of freedom    (FIT_NDF)                        : 4
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 2.28106e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.20323e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.117927         +/- 0.0004535    (0.3846%)
+b               = -0.0347518       +/- 0.0002663    (0.7663%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -1.000  1.000 
+
+
+*******************************************************************************
+Tue Feb 25 23:45:29 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/0/arrayTempi_0gradi_alluminio.txt ../Risultati/MetaDati/0/velocita_0gradi_alluminio.txt' using 1:2
+        format = x:z
+        #datapoints = 6
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 41.9472           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 1.39644
+
+initial set of free parameter values
+
+a               = 1
+b               = 1
+
+After 6 iterations the fit converged.
+final sum of squares of residuals : 2.08129e-09
+rel. change during last iteration : -5.5641e-14
+
+degrees of freedom    (FIT_NDF)                        : 4
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 2.28106e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.20323e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.117927         +/- 0.0004535    (0.3846%)
+b               = -0.0347518       +/- 0.0002663    (0.7663%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -1.000  1.000 
