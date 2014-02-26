@@ -3,13 +3,13 @@ set fit logfile '../Risultati/Analisi_Dati/ris_0gradi_peso'
 
 f(x)=a+b*x
 
-fit f(x) '< paste ../Risultati/MetaDati/0/arrayTempi_0gradi_peso.txt ../Risultati/MetaDati/0/velocita_0gradi_peso.txt' using 1:2 via a,b
+fit f(x) '< paste ../Risultati/MetaDati/0/intervalli_spazio.txt ../Risultati/MetaDati/0/velocita_0gradi_peso.txt' using 1:2:3 via a,b
 
 
 
 
 #Fai il grafico
-set xlabel "Tempo (s)"
+set xlabel "Spazio (m)"
 set ylabel "Velocita (m/s)"
 unset key
 

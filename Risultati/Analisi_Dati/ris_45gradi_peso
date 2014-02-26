@@ -790,3 +790,43 @@ correlation matrix of the fit parameters:
                a      b      
 a               1.000 
 b              -0.919  1.000 
+
+
+*******************************************************************************
+Wed Feb 26 15:30:41 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+
+
+
+*******************************************************************************
+Wed Feb 26 15:30:41 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+
+
+
+*******************************************************************************
+Wed Feb 26 15:31:28 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+
+
+
+*******************************************************************************
+Wed Feb 26 15:31:28 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+

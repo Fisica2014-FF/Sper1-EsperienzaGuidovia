@@ -3,7 +3,7 @@ set fit logfile '../Risultati/Analisi_Dati/ris_45gradi_peso'
 
 f(x)=a+b*x
 
-fit f(x) '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2 via a,b
+fit f(x) '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_peso.txt ../Risultati/MetaDati/45/velocita_PV_peso.txt' using 1:2:3 via a,b
 
 
 

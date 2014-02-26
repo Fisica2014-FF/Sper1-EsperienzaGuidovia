@@ -6,7 +6,6 @@
 //============================================================================
 
 // VERSIONE PER I COMPAGNI DEL GRUPPO!!! NON CONSEGNARE QUESTA!!!!
-// Quando scrivo TODO: è perchè con eclipse dopo mi consente di trovare i commenti da togliere più in fretta
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Librerie
@@ -54,17 +53,23 @@ int main(int numParam, char* args[]) {
 		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 		vector<VarStat<double> > arrayTempi;
 		arrayRiassunti.reserve(NUM_FILE);
-		const auto INTERVALLO = VarStat<double>(0.1, 0.001 / sqrt(6));//Distribuzione triangolare
+		const auto INTERVALLO_PV = VarStat<double>(0.1, 0.001 / sqrt(6));//Distribuzione triangolare
 
 //		vector<double> v1 = {1,1,1,100000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,2,1,3,2};
 //
-//		vector<double> v2 = {2,3,1,1};
-//		vector<double> v3 = {4,5,6,10};
+//		vector<double> v2 = {3,4,7,8};
+//		vector<double> v3 = {1,2,5,6};
+//		VarStat<double> var2(v2,true);
+//		VarStat<double> var3(v3,true);
+//
 //		VarStat<double> AnDat(v2,true);
-//		Sorting_VarStat<double> var2(std::move(v3));//Non usare più v1
-//		cout << "MEDIANA " <<var2.getMediana() << "\n";
+//		//Sorting_VarStat<double> var2(std::move(v3));//Non usare più v1
+//		//cout << "MEDIANA " <<var2.getMediana() << "\n";
 //		AnDat = (AnDat-var2)/(AnDat*3*var2);
-//		cout << AnDat << endl;
+//		cout << "var2: \n" << var2 << endl;
+//		cout << "var3: \n" << var3 << endl;
+//		cout << "somma elementi: \n" << VarStat<double>({4,6,12,14}) << endl;
+//		cout << "somma variabili: \n" << (var2+var3) << endl;
 //
 //		return 0;
 
@@ -82,6 +87,9 @@ int main(int numParam, char* args[]) {
 		using namespace mions::dataAnalisi;
 		vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 		vector<VarStat<double> > arrayTempi;
+		//TODO aggiunto zero all'inizio
+		arrayTempi.emplace_back(0.0);
+
 		arrayRiassunti.reserve(NUM_FILE);
 		string nomeoutputfile;
 		string nomefilemedie;
@@ -154,11 +162,11 @@ int main(int numParam, char* args[]) {
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
 					//const auto intervallo = VarStat<double>(0.1, 0.1 / sqrt(6));
-					for (auto& cinque_tempi_media : arrayTempi)
+					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
-								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
+						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
+								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -169,12 +177,11 @@ int main(int numParam, char* args[]) {
 					nomeoutputvelocita = string("./Risultati/MetaDati/30/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
-					for (auto& cinque_tempi_media : arrayTempi)
+					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
-								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
-
+						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
+								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -185,11 +192,11 @@ int main(int numParam, char* args[]) {
 					nomeoutputvelocita = string("./Risultati/MetaDati/45/") + nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
-					for (auto& cinque_tempi_media : arrayTempi)
+					for (int i = 0; i < NUM_FILE; i++)
 					{
-						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
-								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
+						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
+								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -232,6 +239,9 @@ int main(int numParam, char* args[]) {
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 			vector<VarStat<double> > arrayTempi;
+			//TODO aggiunto zero all'inizio
+			arrayTempi.emplace_back(0.0);
+
 			arrayRiassunti.reserve(NUM_FILE);
 			string nomeoutputfile;
 			string nomefilemedie;
@@ -248,9 +258,6 @@ int main(int numParam, char* args[]) {
 
 			//string nomeoutputfile = "./Risultati/nopeso_dati.txt";
 			FileRiassunto.open(nomeoutputfile.c_str());
-
-				//Se la slitta è carica fai solo i 45
-				//TODO: Sporco trucco, ma sono disperato
 				for (int intervallo = 1; intervallo <= NUM_FILE; intervallo++) {
 
 					stringstream ss;
@@ -302,10 +309,11 @@ int main(int numParam, char* args[]) {
 							+ nomefilevelocita;
 					FileMedie.open(nomeoutputfile.c_str());
 					FileVelocita.open(nomeoutputvelocita.c_str());
-					for (auto& cinque_tempi_media : arrayTempi) {
-						FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
-						FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
-								<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
+					for (int i = 0; i < NUM_FILE; i++)
+					{
+						FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+						FileVelocita << (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getMedia() << " "
+								<< (INTERVALLO_PV / (arrayTempi[i+1] - arrayTempi[i]) ).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 					}
 					FileMedie.close();
 					FileVelocita.close();
@@ -355,12 +363,14 @@ int main(int numParam, char* args[]) {
 			ofstream FileVelocita;
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
-			vector<VarStat<double> > arrayTempi;
+			vector<VarStat<double> > arrayTempi;//Niente zero perchè non devo dividere per la differenza
 			arrayRiassunti.reserve(NUM_FILE);
 			string nomeoutputfile;
 			string nomefilemedie;
 			string nomefilevelocita;
 			string nomeoutputvelocita;
+			const auto INTERVALLO_SV = VarStat<double>(0.2, 0.001 / sqrt(6));//Distribuzione triangolare
+
 
 			/* Vari casi:
 			 * 	1. nè peso nè alluminio (file "d...")
@@ -451,10 +461,11 @@ int main(int numParam, char* args[]) {
 						+ nomefilevelocita;//Idem per nomefilevelocita
 				FileMedie.open(nomeoutputfile.c_str());
 				FileVelocita.open(nomeoutputvelocita.c_str());
-				for (auto& cinque_tempi_media : arrayTempi) {
-					FileMedie << cinque_tempi_media.getMedia() << endl;//sette medie di cinque tempi ciascuns
-					FileVelocita << (INTERVALLO / cinque_tempi_media).getMedia() << " "
-							<< (INTERVALLO / cinque_tempi_media).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
+				for (int i = 0; i < NUM_FILE_0GRADI; i++)
+				{
+					FileMedie << (arrayTempi[i+1]+arrayTempi[i])/2 << endl;//sette medie di cinque tempi ciascuns
+					FileVelocita << (INTERVALLO_SV / arrayTempi[i]).getMedia() << " "
+							<< (INTERVALLO_SV / arrayTempi[i]).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 				}
 				FileMedie.close();
 				FileVelocita.close();

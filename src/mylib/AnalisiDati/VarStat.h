@@ -289,7 +289,7 @@ public:
 	inline VarStat<T>& operator+=(const VarStat<T>& rhs) {
 		//Obiettivo: dare gli stessi risultati come se avessi sommato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sommando i singoli elementi fra loro
-		dMedia = rhs.getMedia() + getMedia();//Somma le medie delle due variabili
+		dMedia += rhs.getMedia();//Somma le medie delle due variabili
 		dVarianzaCampione = rhs.getVarianzaCampione() + getVarianzaCampione();//Propagazione dell'errore
 		dVarianzaPopolazione = rhs.getVarianzaPopolazione() + getVarianzaPopolazione();
 

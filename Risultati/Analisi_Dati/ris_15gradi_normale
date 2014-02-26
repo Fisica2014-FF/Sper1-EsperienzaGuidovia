@@ -560,3 +560,23 @@ correlation matrix of the fit parameters:
                a      b      
 a               1.000 
 b              -0.922  1.000 
+
+
+*******************************************************************************
+Wed Feb 26 15:30:41 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/15/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/15/velocita_PV_normale.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+
+
+
+*******************************************************************************
+Wed Feb 26 15:31:28 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/15/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/15/velocita_PV_normale.txt' using 1:2:3
+        format = x:z:s
+BREAK:          No data to fit 
+
