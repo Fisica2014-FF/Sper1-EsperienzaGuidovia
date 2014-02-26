@@ -1,70 +1,7 @@
-Numero dati:                       5
-Media:                             0.6502
-Varianza del campione:             3.38208e-07
-Deviazione standard campione:      0.000581557
-Varianza della popolazione:        4.2276e-07
-Deviazione standard popolazione:   0.0006502
-Errore della media:                0
-Massimo:                           0.652
-Minimo:                            0.649
-
-Numero dati:                       5
-Media:                             1.0219
-Varianza del campione:             2.33919e-06
-Deviazione standard campione:      0.00152944
-Varianza della popolazione:        2.92398e-06
-Deviazione standard popolazione:   0.00170997
-Errore della media:                0.000732294
-Massimo:                           1.025
-Minimo:                            1.019
-
-Numero dati:                       5
-Media:                             1.3568
-Varianza del campione:             7.65817e-06
-Deviazione standard campione:      0.00276734
-Varianza della popolazione:        9.57271e-06
-Deviazione standard popolazione:   0.00309398
-Errore della media:                0.000751624
-Massimo:                           1.361
-Minimo:                            1.353
-
-Numero dati:                       5
-Media:                             1.6664
-Varianza del campione:             2.08267e-05
-Deviazione standard campione:      0.00456362
-Varianza della popolazione:        2.60333e-05
-Deviazione standard popolazione:   0.00510229
-Errore della media:                0.000821715
-Massimo:                           1.672
-Minimo:                            1.6625
-
-Numero dati:                       5
-Media:                             1.9541
-Varianza del campione:             3.07008e-05
-Deviazione standard campione:      0.00554083
-Varianza della popolazione:        3.8376e-05
-Deviazione standard popolazione:   0.00619484
-Errore della media:                0.000725523
-Massimo:                           1.9605
-Minimo:                            1.9495
-
-Numero dati:                       5
-Media:                             2.2215
-Varianza del campione:             2.31948e-05
-Deviazione standard campione:      0.0048161
-Varianza della popolazione:        2.89935e-05
-Deviazione standard popolazione:   0.00538456
-Errore della media:                0.000975894
-Massimo:                           2.2265
-Minimo:                            2.217
-
-Numero dati:                       5
-Media:                             2.8577
-Varianza del campione:             0.000425962
-Deviazione standard campione:      0.0206388
-Varianza della popolazione:        0.000532452
-Deviazione standard popolazione:   0.0230749
-Errore della media:                0.00252727
-Massimo:                           2.869
-Minimo:                            2.847
-
+0.2263
+0.6502
+1.0219
+1.3568
+1.6664
+1.9541
+2.2215

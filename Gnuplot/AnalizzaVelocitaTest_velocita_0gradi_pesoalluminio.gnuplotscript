@@ -15,7 +15,7 @@ unset key
 set terminal png
 set output "./immagini/velocita_0gradi_pesoalluminio.png"
 
-plot '< paste ../Risultati/MetaDati/0/arrayTempi_0gradi_pesoalluminio.txt ../Risultati/MetaDati/0/velocita_0gradi_pesoalluminio.txt' with yerrorbars, \
+plot '< paste ../Risultati/MetaDati/0/intervalli_spazio.txt ../Risultati/MetaDati/0/velocita_0gradi_pesoalluminio.txt' with yerrorbars, \
 f(x)
 
 
