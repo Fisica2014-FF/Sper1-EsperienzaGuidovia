@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <memory>
 #include <limits>
-
+#include <cmath>
 
 
 #ifdef _MIO_DEBUG_
@@ -110,12 +110,12 @@ public:
 		iNumero_dati = numDati;
 		dMedia = (double)valore;
 		dDeviazioneStandardPop = DevStdPop;
-		dDeviazioneStandardCamp = DevStdPop * (numDati-1)/numDati;
+		dDeviazioneStandardCamp = DevStdPop * sqrt(double(numDati-1)/double(numDati));
 		dVarianzaCampione = dDeviazioneStandardCamp*dDeviazioneStandardCamp;
 		dVarianzaPopolazione = DevStdPop*DevStdPop;
 		dMax = (double)valore + DevStdPop;
 		dMin = (double)valore - DevStdPop;
-		dErroreMedia = 0;
+		dErroreMedia = DevStdPop / sqrt(numDati);
 	}
 
 	//Costruttore
@@ -287,6 +287,7 @@ public:
 	//Operatori
 	//Somma una variabile statistica a un'altra e memorizzala nella prima. Vedi commento su -=, sotto
 	inline VarStat<T>& operator+=(const VarStat<T>& rhs) {
+		using std::abs;
 		//Obiettivo: dare gli stessi risultati come se avessi sommato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sommando i singoli elementi fra loro
 		dMedia += rhs.getMedia();//Somma le medie delle due variabili
@@ -311,12 +312,13 @@ public:
 	//Sottrai una variabile statistica a un'altra e memorizzala nella prima. v1 -= v2 è come v.operator-=(v2), quindi le funzioni get, etc qui dentro si riferiscono a v1!!! E rhs.get... a v2
 
 	inline VarStat<T>& operator-=(const VarStat<T>& rhs) {
+		using std::abs;
 		//TODO: Possibile farlo come lhs += (-1)*rhs ?
 		//Obiettivo: dare gli stessi risultati come se avessi sottratto i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma sottraendo i singoli elementi fra loro
 		dMedia = getMedia() - rhs.getMedia();//Sottrai le medie delle due variabili
-		dVarianzaCampione = rhs.getVarianzaCampione() + getVarianzaCampione();//Propagazione dell'errore
-		dVarianzaPopolazione = rhs.getVarianzaPopolazione() + getVarianzaPopolazione();
+		dVarianzaCampione = getVarianzaCampione() + rhs.getVarianzaCampione();//Propagazione dell'errore
+		dVarianzaPopolazione = getVarianzaPopolazione() + rhs.getVarianzaPopolazione();
 
 		//La nuova varianza permette di calcolare direttamente la nuova std
 		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
@@ -333,15 +335,19 @@ public:
 		return *this;	//Idiozia ma dicono che serva
 	}
 
+
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//Operatori
 	//moltiplica una variabile statistica a un'altra e memorizzala nella prima. Vedi commento su -=, sotto
 	inline VarStat<T>& operator*=(const VarStat<T>& rhs) {
+		using std::abs;
 		//Obiettivo: dare gli stessi risultati come se avessi moltiplicato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma moltiplicando i singoli elementi fra loro
 		double tMedia = getMedia();//Salvo la media
 		dMedia = rhs.getMedia() * getMedia();//MOltiplica le medie delle due variabili
-		dVarianzaCampione = getMedia()*getMedia()*(rhs.getVarianzaCampione() / (tMedia*tMedia) + getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
-		dVarianzaPopolazione = getMedia()*getMedia()*(rhs.getVarianzaPopolazione() / (tMedia*tMedia) + getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
+		dVarianzaCampione = getMedia()*getMedia()*(getVarianzaCampione() / (tMedia*tMedia) + rhs.getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
+		dVarianzaPopolazione = getMedia()*getMedia()*(getVarianzaPopolazione() / (tMedia*tMedia) + rhs.getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
 
 		//La nuova varianza permette di calcolare direttamente la nuova std
 		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
@@ -356,17 +362,18 @@ public:
 		//Idem per il minimo, il minimo "minore" è la somma dei minimi
 		dMin = (getMedia() > 0) ? (getMin() * rhs.getMin()) : ( -INFINITY );
 
-		dErroreMedia = abs(getMedia())*sqrt(pow(rhs.getErroreMedia() / rhs.getMedia(),2) + pow(getErroreMedia() / tMedia,2) );//Propagato come una StDev normale
+		dErroreMedia = getDeviazioneStandardPop() / sqrt(getNumeroDatiEffettivo());//Propagato come una StDev normale
 		return *this;	//Idiozia ma dicono che serva
 	}
 
 	inline VarStat<T>& operator/=(const VarStat<T>& rhs) {
+		using std::abs;
 		//Obiettivo: dare gli stessi risultati come se avessi moltiplicato i dati di due insiemi (i dati due a due, non gli insiemi) ma senza un ordine definito tra i due
 		//iNumero_dati = iNumero_dati; Non sto unendo gli insiemi di dati, ma moltiplicando i singoli elementi fra loro
 		double tMedia = getMedia();//Salvo la media
 		dMedia = getMedia() / rhs.getMedia();//MOltiplica le medie delle due variabili
-		dVarianzaCampione = getMedia() * getMedia()*(rhs.getVarianzaCampione() / (tMedia*tMedia) + getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
-		dVarianzaPopolazione = getMedia() * getMedia()*(rhs.getVarianzaPopolazione() / (tMedia*tMedia) + getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
+		dVarianzaCampione = getMedia() * getMedia()*(getVarianzaCampione() / (tMedia*tMedia) + rhs.getVarianzaCampione() / (rhs.getMedia() * rhs.getMedia()) );//Propagazione dell'errore
+		dVarianzaPopolazione = getMedia() * getMedia()*(getVarianzaPopolazione() / (tMedia*tMedia) +rhs.getVarianzaPopolazione() / (rhs.getMedia() * rhs.getMedia()) );
 
 		//La nuova varianza permette di calcolare direttamente la nuova std
 		dDeviazioneStandardCamp = sqrt(getVarianzaCampione());
@@ -380,7 +387,7 @@ public:
 		//Idem per il minimo, il minimo "minore" è la somma dei minimi
 		dMin = (getMedia() > 0) ? (getMin() / rhs.getMax()) : ( -INFINITY );
 
-		dErroreMedia = abs(getMedia())*sqrt(pow(rhs.getErroreMedia() / rhs.getMedia(),2) + pow(getErroreMedia() / tMedia,2) );//Propagato come una StDev normale
+		dErroreMedia = getDeviazioneStandardPop() / sqrt(getNumeroDatiEffettivo());
 		return *this;	//Idiozia ma dicono che serva
 	}
 
@@ -393,6 +400,7 @@ public:
 
 	//Moltiplicazione per scalare, compound assignment. v *= d è come v.operator*=(d), quindi le funzioni get, etc qui dentro si riferiscono a v
 	inline VarStat<T>& operator*=(const double& rhs) {
+		using std::abs;
 		//Obiettivo: dare gli stessi risultati come se avessi preso tutti i dati e, moltiplicato ciascuno per rhs, li avessi passati a lhs
 		dMedia = rhs * getMedia();//Moltiplica la media della VarStat a sinistra del simbolo per il double a destra
 		dVarianzaCampione = rhs * rhs * getVarianzaCampione();
@@ -406,7 +414,7 @@ public:
 		dMax = (rhs >= 0 ? rhs * tMax : rhs * tMin);
 		dMin = (rhs >= 0 ? rhs * tMin : rhs * tMax);
 
-		dErroreMedia = rhs*rhs*getErroreMedia();
+		dErroreMedia = abs(rhs)*getErroreMedia();
 		return *this;	//Idiozia ma dicono che serva
 	}
 

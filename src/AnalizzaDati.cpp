@@ -489,6 +489,41 @@ int main(int numParam, char* args[]) {
 
 
 
+//////////////////////////////////////////////////
+//Analizza i dati per la gravità
+typedef VarStat<double> vs;
+const double G15 = 0.25*M_PI/180.0;//15 primi di grado
+const double G30 = 0.50*M_PI/180.0;//15 primi di grado
+const double G45 = 0.75*M_PI/180.0;//15 primi di grado
+
+ofstream AnalisiGravita;
+AnalisiGravita.open("./Risultati/Analisi_Dati/DatiGravità");
+
+////Media tra gravità a 15, 30, 45, 45peso presi dai valori di Gnuplot
+//AnalisiGravita << "Media gravità della prima giornata: (a15 + a30 + a45 + a45p)/4" << endl;
+//AnalisiGravita << ((vs(0.0388864,0.001)*(1/sin(G15))).getMedia() + //15 norm
+//				  (vs(0.0811784,0.001408)*(1/sin(G30))).getMedia() + //30 norm
+//				  (vs(0.121616,0.001795)*(1/sin(G45))).getMedia() + //45 norm
+//				  (vs(0.122322,0.00114)*(1/sin(G45))).getMedia() ) / //45 peso
+//						  4
+//				  << endl << endl;
+
+//Media tra gravità a 15, 30, 45, 45peso presi dai valori di Gnuplot
+AnalisiGravita << "Dati gravità della prima giornata: (a15 + a30 + a45 + a45p)/4" << endl;
+AnalisiGravita << ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
+				  (vs(0.0811784,0.001408,7)*(1/sin(G30))) + //30 norm
+				  (vs(0.121616,0.001795,7)*(1/sin(G45))) + //45 norm
+				  (vs(0.122322,0.00114,7)*(1/sin(G45))) ) *  //45 peso
+						  (0.25)							// diviso 4
+				  << endl << endl;
+
+AnalisiGravita << "Beta seconda giornata, senza peso: (b_norm + b_alluminio)/2" << endl;
+AnalisiGravita << ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
+				  (vs(0.0811784,0.001408,7)*(1/sin(G30))) ) * //30 norm
+						  (0.5)
+				  << endl << endl;
+
+
 	} catch (exception &e) {
 		cout << e.what() << endl;
 		return -1;

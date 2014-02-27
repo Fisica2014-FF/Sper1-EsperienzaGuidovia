@@ -1,0 +1,132 @@
+
+
+*******************************************************************************
+Thu Feb 27 10:42:23 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/45/velocita_PV_normale.txt' using 1:2:3
+        format = x:z:s
+        #datapoints = 7
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 2345.82           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 228.504
+
+initial set of free parameter values
+
+a               = 0.202351
+b               = 0.0811784
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 1.09626
+rel. change during last iteration : -2.76112e-12
+
+degrees of freedom    (FIT_NDF)                        : 5
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.468244
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.219252
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.249444         +/- 0.0008922    (0.3577%)
+b               = 0.121616         +/- 0.001795     (1.476%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -0.728  1.000 
+
+
+*******************************************************************************
+Thu Feb 27 12:19:04 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/45/velocita_PV_normale.txt' using 1:2:3
+        format = x:z:s
+        #datapoints = 7
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 6935.67           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 380.505
+
+initial set of free parameter values
+
+a               = 0.202137
+b               = 0.0811639
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 4.37123
+rel. change during last iteration : -6.01434e-13
+
+degrees of freedom    (FIT_NDF)                        : 5
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.935012
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.874247
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.24901          +/- 0.001276     (0.5124%)
+b               = 0.122004         +/- 0.001991     (1.632%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -0.791  1.000 
+
+
+*******************************************************************************
+Thu Feb 27 12:30:44 2014
+
+
+FIT:    data read from '< paste ../Risultati/MetaDati/45/arrayTempi_PrimaVolta_normale.txt ../Risultati/MetaDati/45/velocita_PV_normale.txt' using 1:2:3
+        format = x:z:s
+        #datapoints = 7
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 6935.67           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 380.505
+
+initial set of free parameter values
+
+a               = 0.202137
+b               = 0.0811639
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 4.37123
+rel. change during last iteration : -6.01434e-13
+
+degrees of freedom    (FIT_NDF)                        : 5
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.935012
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.874247
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 0.24901          +/- 0.001276     (0.5124%)
+b               = 0.122004         +/- 0.001991     (1.632%)
+
+
+correlation matrix of the fit parameters:
+
+               a      b      
+a               1.000 
+b              -0.791  1.000 
