@@ -509,20 +509,53 @@ AnalisiGravita.open("./Risultati/Analisi_Dati/DatiGravità");
 //				  << endl << endl;
 
 //Media tra gravità a 15, 30, 45, 45peso presi dai valori di Gnuplot
+vs stimaGravita_orig = ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
+				  	   (vs(0.0811784,0.001503,7)*(1/sin(G30))) + //30 norm
+				  	   (vs(0.121616,0.001991,7)*(1/sin(G45))) + //45 norm
+				  	   (vs(0.122322,0.00114,7)*(1/sin(G45))) ) *  //45 peso
+						  (0.25);
+
 AnalisiGravita << "Dati gravità della prima giornata: (a15 + a30 + a45 + a45p)/4" << endl;
-AnalisiGravita << ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
-				  (vs(0.0811784,0.001408,7)*(1/sin(G30))) + //30 norm
-				  (vs(0.121616,0.001795,7)*(1/sin(G45))) + //45 norm
-				  (vs(0.122322,0.00114,7)*(1/sin(G45))) ) *  //45 peso
-						  (0.25)							// diviso 4
-				  << endl << endl;
+AnalisiGravita << stimaGravita_orig << endl << endl;
 
-AnalisiGravita << "Beta seconda giornata, senza peso: (b_norm + b_alluminio)/2" << endl;
-AnalisiGravita << ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
-				  (vs(0.0811784,0.001408,7)*(1/sin(G30))) ) * //30 norm
-						  (0.5)
-				  << endl << endl;
 
+
+
+
+
+//Media Coefficienti rette senza peso
+vs b_np =  (vs(0.00707886,0.004894,6) + //0 norm
+		  	vs(0.0135994,0.005114,6) ) * //0 alluminio
+				  (0.5);
+AnalisiGravita << "B (seconda giornata), senza peso: (b_norm + b_alluminio)/2" << endl;
+AnalisiGravita << b_np << endl << endl;
+
+//Media Coefficienti rette con peso
+vs b_conp = (vs(0.0282376,0.001601,6) + //0 peso
+		  	 vs(0.0395786,0.001124,6) ) * //0 pesoalluminio
+				  (0.5);
+AnalisiGravita << "B (seconda giornata), con peso: (b_peso + b_peso)/2" << endl;
+AnalisiGravita << b_conp << endl << endl;
+
+///////////////////////////////////////////////
+//Stime gravità
+// Velocita media norm (0 gradi)
+vs vMed_norm = (vs(0.172473,0.001) + vs(0.170765,0.00122783) ) * 0.5;
+vs vMed_allum = (vs(0.121344,0.00126562) + vs(0.117702,0.00208813)) * 0.5;
+vs vMed_totnopeso = (vMed_norm + vMed_allum) * 0.5;
+
+// Velocità media col peso (0 gradi)
+vs vMed_peso = (vs(0.103018,0.00142386) + vs(0.116131,0.000705806)) * 0.5;
+vs vMed_pesoallum = (vs(0.0541008,0.00236734) + vs(0.0751428,0.000329625)) * 0.5;
+vs vMed_totpeso = (vMed_peso + vMed_pesoallum) * 0.5;
+
+vs stimaGravita_corr = (((vs(0.0388864,0.001,7) + vMed_totnopeso*b_np) * (1/sin(G15)) ) + //15 norm
+	  	   	   	   	   ((vs(0.0811784,0.001503,7) + vMed_totnopeso*b_np) * (1/sin(G30)) ) + //30 norm
+	  	   	   	   	   ((vs(0.121616,0.001991,7) + vMed_totnopeso*b_np) * (1/sin(G45)) ) + //45 norm
+	  	   	   	   	   ((vs(0.122322,0.00114,7) + vMed_totpeso*b_conp) * (1/sin(G45)) ) ) *  //45 peso
+	  	   	   	   			   	(0.25);
+AnalisiGravita << "Stima gravità corretta: G = G0 + DeltaG" << endl;
+AnalisiGravita << stimaGravita_corr << endl << endl;
 
 	} catch (exception &e) {
 		cout << e.what() << endl;

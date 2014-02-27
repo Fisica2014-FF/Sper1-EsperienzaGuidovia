@@ -1,0 +1,48 @@
+Dati gravità della prima giornata: (a15 + a30 + a45 + a45p)/4
+Numero dati:                       7
+Media:                             9.21266
+Varianza del campione:             0.00604879
+Deviazione standard campione:      0.0777739
+Varianza della popolazione:        0.00705692
+Deviazione standard popolazione:   0.0840055
+Errore della media:                0.0317511
+Massimo:                           9.37281
+Minimo:                            9.05251
+
+
+B (seconda giornata), senza peso: (b_norm + b_alluminio)/2
+Numero dati:                       6
+Media:                             0.0103391
+Varianza del campione:             1.04384e-05
+Deviazione standard campione:      0.00323085
+Varianza della popolazione:        1.25261e-05
+Deviazione standard popolazione:   0.00353922
+Errore della media:                0.00144488
+Massimo:                           0.0153431
+Minimo:                            0.00533513
+
+
+B (seconda giornata), con peso: (b_peso + b_peso)/2
+Numero dati:                       6
+Media:                             0.0339081
+Varianza del campione:             7.97204e-07
+Deviazione standard campione:      0.000892863
+Varianza della popolazione:        9.56644e-07
+Deviazione standard popolazione:   0.000978082
+Errore della media:                0.0003993
+Massimo:                           0.0352706
+Minimo:                            0.0325456
+
+
+Stima gravità corretta: G = G0 - DeltaG
+Numero dati:                       7
+Media:                             9.42716
+Varianza del campione:             0.00703985
+Deviazione standard campione:      0.0839038
+Varianza della popolazione:        0.0082461
+Deviazione standard popolazione:   0.090808
+Errore della media:                0.0317513
+Massimo:                           9.66916
+Minimo:                            9.18669
+
+

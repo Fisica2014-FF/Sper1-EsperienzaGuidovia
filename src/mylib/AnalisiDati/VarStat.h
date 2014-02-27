@@ -406,7 +406,7 @@ public:
 		dVarianzaCampione = rhs * rhs * getVarianzaCampione();
 		dVarianzaPopolazione = rhs * rhs * getVarianzaPopolazione();
 		dDeviazioneStandardCamp = abs(rhs) * getDeviazioneStandardCamp();
-		dDeviazioneStandardPop = abs(rhs) * getDeviazioneStandardCamp();
+		dDeviazioneStandardPop = abs(rhs) * getDeviazioneStandardPop();
 
 		//Se moltiplico per uno scalare negativo, il minimo nei positivi diventa il massimo nei negativi (es se min=-20 e max=40, se li moltiplico per -2 allora min=-40 e max=20)
 		T tMax = dMax;//Massimo temporaneo, perchè quando calcoliamo dMin è già stato modificato dmax

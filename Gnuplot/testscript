@@ -1,8 +1,0 @@
-#Vai nella cartella del progetto
-cd ../
-
-set fit logfile ../Risultati/Analisi_Dati/ris_
-
-f(x)=a+b*x
-
-fit f(x) '< paste __PATHFILETEMPO__ __PATHFILEVELOCITA__' using 1:2 via a,b
