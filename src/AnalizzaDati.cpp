@@ -364,7 +364,7 @@ int main(int numParam, char* args[]) {
 			using namespace mions::dataAnalisi;
 			vector<VarStat<double> > arrayRiassunti;//Contiene le informazioni come la deviazione standard, etc
 			vector<VarStat<double> > arrayTempi;//Niente zero perchè non devo dividere per la differenza
-			arrayRiassunti.reserve(NUM_FILE);
+			arrayRiassunti.reserve(NUM_FILE_0GRADI);
 			string nomeoutputfile;
 			string nomefilemedie;
 			string nomefilevelocita;
@@ -463,7 +463,8 @@ int main(int numParam, char* args[]) {
 				FileVelocita.open(nomeoutputvelocita.c_str());
 				for (int i = 0; i < NUM_FILE_0GRADI; i++)
 				{
-					FileMedie << ((arrayTempi[i+1]+arrayTempi[i])/2).getMedia() << endl;//sette medie di cinque tempi ciascuns
+					//Qui non c'è lo zero, quindi niente media
+					FileMedie << (arrayTempi[i]).getMedia() << endl;//sette medie di cinque tempi ciascuns
 					FileVelocita << (INTERVALLO_SV / arrayTempi[i]).getMedia() << " "
 							<< (INTERVALLO_SV / arrayTempi[i]).getDeviazioneStandardPop() << endl;//10 cm di intervallo/cinque_tempi_media << endl;//10 cm di intervallo
 				}
