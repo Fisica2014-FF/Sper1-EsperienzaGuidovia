@@ -22,7 +22,7 @@
 #include "mylib/AnalisiDati/VarStat.h"//Le mie classi Template per l'analisi dati
 #include "mylib/AnalisiDati/SortingVarStat.h"//Le mie classi Template per l'analisi dati
 
-#define VERSIONE 1.0
+#define VERSIONE 1.5
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Prototipi
@@ -548,6 +548,12 @@ vs vMed_totnopeso = (vMed_norm + vMed_allum) * 0.5;
 vs vMed_peso = (vs(0.103018,0.00142386) + vs(0.116131,0.000705806)) * 0.5;
 vs vMed_pesoallum = (vs(0.0541008,0.00236734) + vs(0.0751428,0.000329625)) * 0.5;
 vs vMed_totpeso = (vMed_peso + vMed_pesoallum) * 0.5;
+
+AnalisiGravita << "Delta G: Rispettivamente a 15, 30, 45 e 45 con peso " << endl;
+AnalisiGravita << "15: " << endl << (vMed_totnopeso*b_np) * (1/sin(G15)) << endl;
+AnalisiGravita << "30: " << endl << (vMed_totnopeso*b_np) * (1/sin(G30)) << endl;
+AnalisiGravita << "45: " << endl << (vMed_totnopeso*b_np) * (1/sin(G45)) << endl;
+AnalisiGravita << "45 con peso: " << endl << (vMed_totpeso*b_conp) * (1/sin(G45)) << endl << endl;
 
 vs stimaGravita_corr = (((vs(0.0388864,0.001,7) + vMed_totnopeso*b_np) * (1/sin(G15)) ) + //15 norm
 	  	   	   	   	   ((vs(0.0811784,0.001503,7) + vMed_totnopeso*b_np) * (1/sin(G30)) ) + //30 norm

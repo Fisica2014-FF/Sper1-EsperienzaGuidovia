@@ -34,7 +34,53 @@ Massimo:                           0.0352706
 Minimo:                            0.0325456
 
 
-Stima gravità corretta: G = G0 - DeltaG
+Delta G: Rispettivamente a 15, 30, 45 e 45 con peso 
+15: 
+Numero dati:                       100000
+Media:                             0.344939
+Varianza del campione:             0.0116215
+Deviazione standard campione:      0.107803
+Varianza della popolazione:        0.0139452
+Deviazione standard popolazione:   0.11809
+Errore della media:                0.000373433
+Massimo:                           0.516792
+Minimo:                            0.176287
+
+30: 
+Numero dati:                       100000
+Media:                             0.172471
+Varianza del campione:             0.00290543
+Deviazione standard campione:      0.053902
+Varianza della popolazione:        0.00348637
+Deviazione standard popolazione:   0.0590455
+Errore della media:                0.000186718
+Massimo:                           0.258399
+Minimo:                            0.0881444
+
+45: 
+Numero dati:                       100000
+Media:                             0.114983
+Varianza del campione:             0.00129134
+Deviazione standard campione:      0.0359353
+Varianza della popolazione:        0.00154955
+Deviazione standard popolazione:   0.0393643
+Errore della media:                0.000124481
+Massimo:                           0.172268
+Minimo:                            0.0587639
+
+45 con peso: 
+Numero dati:                       100000
+Media:                             0.225624
+Varianza del campione:             3.8752e-05
+Deviazione standard campione:      0.00622511
+Varianza della popolazione:        4.58114e-05
+Deviazione standard popolazione:   0.00676841
+Errore della media:                2.14036e-05
+Massimo:                           0.237942
+Minimo:                            0.213558
+
+
+Stima gravità corretta: G = G0 + DeltaG
 Numero dati:                       7
 Media:                             9.42716
 Varianza del campione:             0.00703985
