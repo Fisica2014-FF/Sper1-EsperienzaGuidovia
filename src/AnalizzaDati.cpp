@@ -518,10 +518,10 @@ vs stimaGravita_orig = ((vs(0.0388864,0.001,7)*(1/sin(G15))) + //15 norm
 AnalisiGravita << "Dati gravità della prima giornata: (a15 + a30 + a45 + a45p)/4" << endl;
 AnalisiGravita << stimaGravita_orig << endl << endl;
 
-
-
-
-
+AnalisiGravita << "a15: " << endl << vs(0.0388864,0.001,7)*(1/sin(G15)) << endl;
+AnalisiGravita << "a30: " << endl << vs(0.0811784,0.001503,7)*(1/sin(G30)) << endl;
+AnalisiGravita << "a45: " << endl << vs(0.121616,0.001991,7)*(1/sin(G45)) << endl;
+AnalisiGravita << "a45p: " << endl << vs(0.122322,0.00114,7)*(1/sin(G45)) << endl << endl;
 
 //Media Coefficienti rette senza peso
 vs b_np =  (vs(0.00707886,0.004894,6) + //0 norm

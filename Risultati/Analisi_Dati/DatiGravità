@@ -10,6 +10,51 @@ Massimo:                           9.37281
 Minimo:                            9.05251
 
 
+a15: 
+Numero dati:                       7
+Media:                             8.91213
+Varianza del campione:             0.0450216
+Deviazione standard campione:      0.212183
+Varianza della popolazione:        0.0525252
+Deviazione standard popolazione:   0.229184
+Errore della media:                0.0866234
+Massimo:                           9.14132
+Minimo:                            8.68295
+
+a30: 
+Numero dati:                       7
+Media:                             9.30248
+Varianza del campione:             0.0254266
+Deviazione standard campione:      0.159457
+Varianza della popolazione:        0.0296643
+Deviazione standard popolazione:   0.172233
+Errore della media:                0.0650981
+Massimo:                           9.47471
+Minimo:                            9.13024
+
+a45: 
+Numero dati:                       7
+Media:                             9.29104
+Varianza del campione:             0.0198309
+Deviazione standard campione:      0.140822
+Varianza della popolazione:        0.0231361
+Deviazione standard popolazione:   0.152106
+Errore della media:                0.0574905
+Massimo:                           9.44315
+Minimo:                            9.13894
+
+a45p: 
+Numero dati:                       7
+Media:                             9.34498
+Varianza del campione:             0.00650145
+Deviazione standard campione:      0.0806316
+Varianza della popolazione:        0.00758503
+Deviazione standard popolazione:   0.0870921
+Errore della media:                0.0329177
+Massimo:                           9.43207
+Minimo:                            9.25789
+
+
 B (seconda giornata), senza peso: (b_norm + b_alluminio)/2
 Numero dati:                       6
 Media:                             0.0103391
