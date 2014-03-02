@@ -7,6 +7,7 @@
 \usepackage{graphicx}		% Per le immagini
 \usepackage[top=2in, bottom=1.5in, left=0.5in, right=0.5in]{geometry}
 \usepackage{float}
+\usepackage{gnuplot-lua-tikz}
 
 \nonstopmode
 
@@ -361,7 +362,7 @@ Si deduce da questo che il metodo più preciso per calcolare l'accelerazione di 
 	\subsection{Inclinazione 15', senza peso}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\textwidth]{velocita_15gradi_normale}
+		\input{../Gnuplot/immagini/velocita_15gradi_normale.tex}
 		\label{fig:15n}
 	\end{figure}
  
